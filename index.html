@@ -15,14 +15,14 @@
 </head>
 <body>
 
-  <div id="root">
+<div id="root">
 
-    <div id="header">
+  <div id="header">
 
-        <div id="explainer">
-          <p>This interactive charts the <b><i>new</i></b> {{selectedData.toLowerCase()}} of COVID-19 in the past week vs. the <b><i>total</i></b> {{selectedData.toLowerCase()}} to date. When plotted in this way, exponential growth is represented as a straight line that slopes upwards. Notice that almost all countries follow a very similar path of exponential growth. <i>We're all in this together.</i> <span v-if="isHidden"><a @click="toggleHide">Learn more.</a></span></p>
+    <div id="explainer">
+      <p>This interactive charts the <b><i>new</i></b> {{selectedData.toLowerCase()}} of COVID-19 in the past week vs. the <b><i>total</i></b> {{selectedData.toLowerCase()}} to date. When plotted in this way, exponential growth is represented as a straight line that slopes upwards. Notice that almost all areas follow a very similar path of exponential growth. <i>We're all in this together.</i> <span v-if="isHidden"><a @click="toggleHide">Learn more.</a></span></p>
 
-          <span v-if="!isHidden">
+      <span v-if="!isHidden">
 
             <p>To learn more about this graph, watch this video created by Minute Physics.</p>
             <br>
@@ -35,108 +35,105 @@
 
             <a id="hide" @click="toggleHide">Hide</a>
           </span>
-        </div>
+    </div>
 
-        <div id="logowrapper">
+    <div id="logowrapper">
 
-          <h1><a href="https://aatishb.com/covidtrends">Covid Trends</a></h1>
+      <h1><a href="https://aatishb.com/covidtrends">Covid Trends</a></h1>
 
-          <div v-if="!isHidden" id="logos">
-            <a href="https://aatishb.com/"><img src="logos/aatishb-bw.png" height="40"></img></a>
-            <a href="https://www.youtube.com/user/minutephysics"><img src="logos/minutephysics-invert.png" height="40"></img></a>
-          </div>
-
-        </div>
-
+      <div v-if="!isHidden" id="logos">
+        <a href="https://aatishb.com/"><img src="logos/aatishb-bw.png" height="40"></img></a>
+        <a href="https://www.youtube.com/user/minutephysics"><img src="logos/minutephysics-invert.png" height="40"></img></a>
+      </div>
 
     </div>
 
-    <div id="content">
 
-      <div id="left-column">
+  </div>
 
-        <graph v-if="covidData.length > 0" :data="filteredCovidData" :dates="dates" :day.sync="day" :selected-data="selectedData" :scale="selectedScale" :resize="isHidden" @graph-mounted="graphMounted = true"></graph>
+  <div id="content">
 
-        <div id="nav">
+    <div id="left-column">
 
-          <div class="navelement">
-            <img v-if="paused" @click="play" src="icons/play.svg" style="width: 3rem;">
-            <img v-if="!paused" @click="play" src="icons/pause.svg" style="width: 3rem;">
-          </div>
+      <graph v-if="covidData.length > 0" :data="filteredCovidData" :dates="dates" :day.sync="day" :selected-data="selectedData" :scale="selectedScale" :resize="isHidden" @graph-mounted="graphMounted = true"></graph>
 
-          <div class="navelement">
-            <h2>{{minDay > 0 ? dates[day - 1] : dates[dates.length - 1] }}</h2>
-          </div>
+      <div id="nav">
 
-          <div class="navelement" id="slidercontainer">
-            <input v-if="dates.length > 7" type="range" :min="minDay > 0 ? minDay : dates.length" :max="dates.length" step="1" v-model="day" id="slider" @mousedown="pause"></input>
-          </div>
-
-          <div class="navelement">
-            <select v-model="selectedScale" @mousedown="pause">
-              <option v-for="s in scale" v-bind:value="s">
-                {{ s }}
-              </option>
-            </select>
-          </div>
-
+        <div class="navelement">
+          <img v-if="paused" @click="play" src="icons/play.svg" style="width: 3rem;">
+          <img v-if="!paused" @click="play" src="icons/pause.svg" style="width: 3rem;">
         </div>
 
-
-        <div id="footer">
-          Created by <a href="https://aatishb.com/">Aatish Bhatia</a> in collaboration with <a href="https://www.youtube.com/user/minutephysics">Minute Physics</a> &middot; Data provided by <a href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins University</a> &middot; Shortcuts: +/- for daily changes, space to play/pause &middot; <a href="https://github.com/aatishb/covidtrends#credits">Credits & Source</a> &middot; <a href="https://www.cdc.gov/coronavirus/2019-ncov/prepare/prevention.html">Stay safe!</a>
+        <div class="navelement">
+          <h2>{{minDay > 0 ? dates[day - 1] : dates[dates.length - 1] }}</h2>
         </div>
 
-      </div>
+        <div class="navelement" id="slidercontainer">
+          <input v-if="dates.length > 7" type="range" :min="minDay > 0 ? minDay : dates.length" :max="dates.length" step="1" v-model="day" id="slider" @mousedown="pause"></input>
+        </div>
 
-      <div id="right-column">
-
-        <div>
-          <h2>Customize</h2>
-
-          <select v-model="selectedData" @mousedown="pause">
-            <option v-for="d in dataTypes" v-bind:value="d">
-              {{ d }}
-            </option>
-          </select>
-
+        <div class="navelement">
           <select v-model="selectedScale" @mousedown="pause">
             <option v-for="s in scale" v-bind:value="s">
               {{ s }}
             </option>
           </select>
-
         </div>
 
-        <div id="countries">
-
-          <h2>Countries</h2>
-
-          <p>Countries with at least {{minCasesInCountry}} {{selectedData}}</p>
-
-          <div id="buttonwrapper">
-            <button @click="deselectAll">Deselect All</button>
-            <button @click="selectAll">Select All</button>
-          </div>
-
-          <ul style="padding-top: 0.5rem;">
-            <li v-for="country in countries">
-              <input type="checkbox" :id="country" :value="country" v-model="selectedCountries">
-              <label :for="country">{{country}}</label>
-            </li>
-          </ul>
+      </div>
 
 
+      <div id="footer">
+        Created by <a href="https://aatishb.com/">Aatish Bhatia</a> with <a href="https://www.youtube.com/user/minutephysics">Minute Physics</a> &middot; Data provided by <a href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins University</a> &middot; Shortcuts: +/- for daily changes, space to play/pause &middot; <a href="https://github.com/aatishb/covidtrends#credits">Credits & Source</a> &middot; Modified for US Data by <a href="https://gtri.gatech.edu/">GTRI</a>. <a href="https://www.cdc.gov/coronavirus/2019-ncov/prepare/prevention.html">Stay safe!</a>
+      </div>
+
+    </div>
+
+    <div id="right-column">
+
+      <div>
+        <h2>Customize</h2>
+
+        <select v-model="selectedData" @mousedown="pause">
+          <option v-for="d in dataTypes" v-bind:value="d">
+            {{ d }}
+          </option>
+        </select>
+
+        <select v-model="selectedScale" @mousedown="pause">
+          <option v-for="s in scale" v-bind:value="s">
+            {{ s }}
+          </option>
+        </select>
+
+      </div>
+
+      <div id="states">
+
+        <h2>States</h2>
+
+        <p>States with at least {{minCasesInArea}} {{selectedData}}</p>
+
+        <div id="buttonwrapper">
+          <button @click="deselectAll">Deselect All</button>
+          <button @click="selectAll">Select All</button>
         </div>
 
-        <div>
+        <ul style="padding-top: 0.5rem;">
+          <li v-for="state in states">
+            <input type="checkbox" :id="state" :value="state" v-model="selectedStates">
+            <label :for="state">{{state}}</label>
+          </li>
+        </ul>
 
-          <div id="buttonwrapper">
-            <button @click="createURL" @mousedown="pause">{{copied ? 'Link Copied to Clipboard!' : 'Create Shareable Link'}}</button>
-          </div>
 
+      </div>
+
+      <div>
+
+        <div id="buttonwrapper">
+          <button @click="createURL" @mousedown="pause">{{copied ? 'Link Copied to Clipboard!' : 'Create Shareable Link'}}</button>
         </div>
-
 
       </div>
 
@@ -144,11 +141,14 @@
     </div>
 
 
-
   </div>
 
-  <!-- page code -->
-  <script src="vue-definitions.js"></script>
+
+
+</div>
+
+<!-- page code -->
+<script src="vue-definitions.js"></script>
 
 </body>
 

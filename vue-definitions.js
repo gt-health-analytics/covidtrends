@@ -13,15 +13,15 @@ Vue.component('graph', {
       this.updateLayout();
 
       Plotly.newPlot(this.$refs.graph, this.traces, this.layout, this.config).then(e => {
-          if (!this.graphMounted) {
-            this.$emit('graph-mounted')
-            this.graphMounted = true;
-          }
-        });
+        if (!this.graphMounted) {
+          this.$emit('graph-mounted')
+          this.graphMounted = true;
+        }
+      });
 
       this.$refs.graph.on('plotly_hover', this.onHoverOn)
-        .on('plotly_unhover', this.onHoverOff)
-        .on('plotly_relayout', this.onLayoutChange);
+          .on('plotly_unhover', this.onHoverOff)
+          .on('plotly_relayout', this.onLayoutChange);
 
       this.updateAnimation();
     },
@@ -46,25 +46,25 @@ Vue.component('graph', {
 
     onHoverOn(data) {
 
-        let curveNumber = data.points[0].curveNumber;
-        let name = this.traces[curveNumber].name;
-        this.traceIndices = this.traces.map((e,i) => e.name == name ? i : -1).filter(e => e >= 0);
+      let curveNumber = data.points[0].curveNumber;
+      let name = this.traces[curveNumber].name;
+      this.traceIndices = this.traces.map((e,i) => e.name == name ? i : -1).filter(e => e >= 0);
 
-        let update = {'line':{color: 'rgba(254, 52, 110, 1)'}};
+      let update = {'line':{color: 'rgba(254, 52, 110, 1)'}};
 
-        for (let i of this.traceIndices) {
-          Plotly.restyle(this.$refs.graph, update, [i]);
-        }
+      for (let i of this.traceIndices) {
+        Plotly.restyle(this.$refs.graph, update, [i]);
+      }
 
     },
 
     onHoverOff(data) {
 
-        let update = {'line':{color: 'rgba(0,0,0,0.15)'}};
+      let update = {'line':{color: 'rgba(0,0,0,0.15)'}};
 
-        for (let i of this.traceIndices) {
-          Plotly.restyle(this.$refs.graph, update, [i]);
-        }
+      for (let i of this.traceIndices) {
+        Plotly.restyle(this.$refs.graph, update, [i]);
+      }
 
     },
 
@@ -73,40 +73,40 @@ Vue.component('graph', {
       let showDailyMarkers = this.data.length <= 2;
 
       let traces1 = this.data.map((e,i) => ({
-        x: e.cases,
-        y: e.slope,
-        name: e.country,
-        text: this.dates.map(f => e.country + '<br>' + f),
-        mode: showDailyMarkers ? 'lines+markers' : 'lines',
-        type: 'scatter',
-        legendgroup: i,
-        marker: {
-          size: 4,
-          color: 'rgba(0,0,0,0.15)'
-        },
-        line: {
-          color: 'rgba(0,0,0,0.15)'
-        },
-        hoverinfo:'x+y+text',
-        hovertemplate: '%{text}<br>Total ' + this.selectedData +': %{x:,}<br>Weekly ' + this.selectedData +': %{y:,}<extra></extra>',
-      })
+            x: e.cases,
+            y: e.slope,
+            name: e.state,
+            text: this.dates.map(f => e.state + '<br>' + f),
+            mode: showDailyMarkers ? 'lines+markers' : 'lines',
+            type: 'scatter',
+            legendgroup: i,
+            marker: {
+              size: 4,
+              color: 'rgba(0,0,0,0.15)'
+            },
+            line: {
+              color: 'rgba(0,0,0,0.15)'
+            },
+            hoverinfo:'x+y+text',
+            hovertemplate: '%{text}<br>Total ' + this.selectedData +': %{x:,}<br>Weekly ' + this.selectedData +': %{y:,}<extra></extra>',
+          })
       );
 
       let traces2 = this.data.map((e,i) => ({
-        x: [e.cases[e.cases.length - 1]],
-        y: [e.slope[e.slope.length - 1]],
-        text: e.country,
-        name: e.country,
-        mode: 'markers+text',
-        legendgroup: i,
-        textposition: 'top left',
-        marker: {
-          size: 6,
-          color: 'rgba(254, 52, 110, 1)'
-        },
-        hovertemplate: '%{data.text}<br>Total ' + this.selectedData +': %{x:,}<br>Weekly ' + this.selectedData +': %{y:,}<extra></extra>',
+            x: [e.cases[e.cases.length - 1]],
+            y: [e.slope[e.slope.length - 1]],
+            text: e.state,
+            name: e.state,
+            mode: 'markers+text',
+            legendgroup: i,
+            textposition: 'top left',
+            marker: {
+              size: 6,
+              color: 'rgba(254, 52, 110, 1)'
+            },
+            hovertemplate: '%{data.text}<br>Total ' + this.selectedData +': %{x:,}<br>Weekly ' + this.selectedData +': %{y:,}<extra></extra>',
 
-      })
+          })
       );
 
       this.traces = [...traces1, ...traces2];
@@ -150,10 +150,10 @@ Vue.component('graph', {
         },
         hovermode: 'closest',
         font: {
-                family: 'Open Sans',
-                color: "black",
-                size: 14
-              },
+          family: 'Open Sans',
+          color: "black",
+          size: 14
+        },
       };
 
     },
@@ -161,30 +161,30 @@ Vue.component('graph', {
 
     updateAnimation() {
 
-        let traces1 = this.data.map(e => ({
-          x: e.cases.slice(0, this.day),
-          y: e.slope.slice(0, this.day)
-        }));
+      let traces1 = this.data.map(e => ({
+        x: e.cases.slice(0, this.day),
+        y: e.slope.slice(0, this.day)
+      }));
 
-        let traces2 = this.data.map(e => ({
-          x: [e.cases[this.day - 1]],
-          y: [e.slope[this.day - 1]]
-        }));
+      let traces2 = this.data.map(e => ({
+        x: [e.cases[this.day - 1]],
+        y: [e.slope[this.day - 1]]
+      }));
 
-        Plotly.animate(this.$refs.graph, {
-          data: [...traces1, ...traces2],
-          traces: this.traceCount,
-          layout: this.layout
-        }, {
-          transition: {
-            duration: 0
-          },
-          frame: {
-            // must be >= transition duration
-            duration: 0,
-            redraw: true
-          }
-        });
+      Plotly.animate(this.$refs.graph, {
+        data: [...traces1, ...traces2],
+        traces: this.traceCount,
+        layout: this.layout
+      }, {
+        transition: {
+          duration: 0
+        },
+        frame: {
+          // must be >= transition duration
+          duration: 0,
+          redraw: true
+        }
+      });
 
     },
 
@@ -225,7 +225,7 @@ Vue.component('graph', {
 
     scale() {
       //console.log('scale change detected', this.scale);
-       this.makeGraph();
+      this.makeGraph();
     },
 
     day(newDay, oldDay) {
@@ -262,15 +262,15 @@ Vue.component('graph', {
       autosetRange: true,
       graphMounted: false,
       config: {
-          responsive: true,
-          toImageButtonOptions: {
-            format: 'png', // one of png, svg, jpeg, webp
-            filename: 'Covid Trends',
-            height: 800,
-            width: 1200,
-            scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
-          }
-        },
+        responsive: true,
+        toImageButtonOptions: {
+          format: 'png', // one of png, svg, jpeg, webp
+          filename: 'Covid Trends',
+          height: 800,
+          width: 1200,
+          scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
+        }
+      },
     }
   }
 
@@ -314,8 +314,8 @@ let app = new Vue({
 
       }
 
-      if (urlParameters.has('country')) {
-        this.selectedCountries = urlParameters.getAll('country');
+      if (urlParameters.has('state')) {
+        this.selectedStates = urlParameters.getAll('state');
       }
 
     }
@@ -364,9 +364,9 @@ let app = new Vue({
     myMax() { //https://stackoverflow.com/a/12957522
       var par = []
       for (var i = 0; i < arguments.length; i++) {
-          if (!isNaN(arguments[i])) {
-              par.push(arguments[i]);
-          }
+        if (!isNaN(arguments[i])) {
+          par.push(arguments[i]);
+        }
       }
       return Math.max.apply(Math, par);
     },
@@ -374,9 +374,9 @@ let app = new Vue({
     myMin() {
       var par = []
       for (var i = 0; i < arguments.length; i++) {
-          if (!isNaN(arguments[i])) {
-              par.push(arguments[i]);
-          }
+        if (!isNaN(arguments[i])) {
+          par.push(arguments[i]);
+        }
       }
       return Math.min.apply(Math, par);
     },
@@ -384,9 +384,11 @@ let app = new Vue({
     pullData(selectedData) {
 
       if (selectedData == 'Confirmed Cases') {
-       Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", this.processData);
+        Plotly.d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv', this.processData);
+        // Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", this.processData);
       } else if (selectedData == 'Reported Deaths') {
-       Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", this.processData);
+        // Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", this.processData);
+        Plotly.d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv', this.processData())
       }
     },
 
@@ -396,50 +398,51 @@ let app = new Vue({
 
     processData(data) {
 
-      let countriesToLeaveOut = ['Cruise Ship', 'Diamond Princess'];
+      let statesToLeaveOut = [];
 
-      let renameCountries = {
-        'Taiwan*': 'Taiwan',
-        'Korea, South': 'South Korea'
+      let renameStates = {
       };
 
-      let countries = data.map(e => e["Country/Region"]);
-      countries = this.removeRepeats(countries);
+      let states = data.map(e => e["Province_State"]);
+      states = this.removeRepeats(states);
 
-      let dates = Object.keys(data[0]).slice(4);
+      let dates = Object.keys(data[0]).slice(11);
       this.dates = dates;
 
       //this.day = this.dates.length;
 
       let myData = [];
-      for (let country of countries){
-        let countryData = data.filter(e => e["Country/Region"] == country);
+      for (let state of states){
+        let stateData = data.filter(e => e["Province_State"] == state);
         let arr = [];
 
         for (let date of dates) {
-          let sum = countryData.map(e => parseInt(e[date]) || 0).reduce((a,b) => a+b);
+          let sum = stateData.map(e => parseInt(e[date]) || 0).reduce((a,b) => a+b);
+          if (isNaN(sum)) {
+            sum = 0;
+          }
           arr.push(sum);
         }
 
-        if (!countriesToLeaveOut.includes(country)) {
+        if (!statesToLeaveOut.includes(state)) {
 
           let slope = arr.map((e,i,a) => e - a[i - 7]);
 
-          if (Object.keys(renameCountries).includes(country)) {
-            country = renameCountries[country];
+          if (Object.keys(renameStates).includes(state)) {
+            state = renameStates[state];
           }
 
           myData.push({
-            country: country,
-            cases: arr.map(e => e >= this.minCasesInCountry ? e : NaN),
-            slope: slope.map((e,i) => arr[i] >= this.minCasesInCountry ? e : NaN),
+            state: state,
+            cases: arr.map(e => e >= this.minCasesInArea ? e : NaN),
+            slope: slope.map((e,i) => arr[i] >= this.minCasesInArea ? e : NaN),
           });
 
         }
       }
 
-      this.covidData = myData.filter(e => this.myMax(...e.cases) >= this.minCasesInCountry);
-      this.countries = this.covidData.map(e => e.country).sort();
+      this.covidData = myData.filter(e => this.myMax(...e.cases) >= this.minCasesInArea);
+      this.states = this.covidData.map(e => e.state).sort();
 
     },
 
@@ -469,8 +472,8 @@ let app = new Vue({
     },
 
     increment() {
-       //console.log('day', this.day);
-       //console.log('incrementing');
+      //console.log('day', this.day);
+      //console.log('incrementing');
 
       if (this.day == this.dates.length || this.minDay < 0) {
         this.day = this.dates.length;
@@ -487,11 +490,11 @@ let app = new Vue({
     },
 
     selectAll() {
-      this.selectedCountries = this.countries;
+      this.selectedStates = this.states;
     },
 
     deselectAll() {
-      this.selectedCountries = [];
+      this.selectedStates = [];
     },
 
     changeScale() {
@@ -515,9 +518,9 @@ let app = new Vue({
         queryUrl.append('data', 'deaths');
       }
 
-      for (let country of this.countries) {
-        if (this.selectedCountries.includes(country)) {
-        queryUrl.append('country', country);
+      for (let state of this.states) {
+        if (this.selectedStates.includes(state)) {
+          queryUrl.append('state', state);
         }
       }
 
@@ -541,9 +544,9 @@ let app = new Vue({
       el.style.left = '-9999px';                      // Move outside the screen to make it invisible
       document.body.appendChild(el);                  // Append the <textarea> element to the HTML document
       const selected =
-        document.getSelection().rangeCount > 0        // Check if there is any content selected previously
-          ? document.getSelection().getRangeAt(0)     // Store selection if found
-          : false;                                    // Mark as false to know no selection existed before
+          document.getSelection().rangeCount > 0        // Check if there is any content selected previously
+              ? document.getSelection().getRangeAt(0)     // Store selection if found
+              : false;                                    // Mark as false to know no selection existed before
       el.select();                                    // Select the <textarea> content
       document.execCommand('copy');                   // Copy - only works as a result of a user action (e.g. click events)
       document.body.removeChild(el);                  // Remove the <textarea> element
@@ -561,7 +564,7 @@ let app = new Vue({
   computed: {
 
     filteredCovidData() {
-      return this.covidData.filter(e => this.selectedCountries.includes(e.country));
+      return this.covidData.filter(e => this.selectedStates.includes(e.state));
     },
 
     minDay() {
@@ -593,17 +596,29 @@ let app = new Vue({
 
     selectedScale: 'Logarithmic Scale',
 
-    minCasesInCountry: 50,
+    minCasesInArea: 50,
 
     dates: [],
 
     covidData: [],
 
-    countries: [],
+    states: [],
 
     isHidden: true,
 
-    selectedCountries: ['Australia', 'Canada', 'China', 'France', 'Germany', 'Iran', 'Italy', 'Japan', 'South Korea', 'Spain', 'Switzerland', 'US', 'United Kingdom', 'India', 'Pakistan'],
+    selectedStates: ['American Samoa', 'Guam', 'Northern Mariana Islands',
+      'Puerto Rico', 'Virgin Islands', 'Alabama', 'Alaska', 'Arizona',
+      'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
+      'District of Columbia', 'Florida', 'Georgia', 'Hawaii', 'Idaho',
+      'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
+      'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
+      'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada',
+      'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
+      'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon',
+      'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota',
+      'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington',
+      'West Virginia', 'Wisconsin', 'Wyoming', 'Diamond Princess',
+      'Grand Princess'],
 
     graphMounted: false,
 
