@@ -20,7 +20,7 @@
     <div id="header">
 
         <div id="explainer">
-          <p>This interactive charts the <b><i>new</i></b> {{selectedData.toLowerCase()}} of COVID-19 in the past week vs. the <b><i>total</i></b> {{selectedData.toLowerCase()}} to date. When plotted in this way, exponential growth is represented as a straight line that slopes upwards. Notice that almost all countries follow a very similar path of exponential growth. <i>We're all in this together.</i> <span v-if="isHidden"><a @click="toggleHide">Learn more.</a></span></p>
+          <p>This interactive charts the <b><i>new</i></b> {{selectedData.toLowerCase()}} of COVID-19 in the past week vs. the <b><i>total</i></b> {{selectedData.toLowerCase()}} to date. When plotted in this way, exponential growth is represented as a straight line that slopes upwards. Notice that almost all areas follow a very similar path of exponential growth. <i>We're all in this together.</i> <span v-if="isHidden"><a @click="toggleHide">Learn more.</a></span></p>
 
           <span v-if="!isHidden">
 
@@ -84,7 +84,7 @@
 
 
         <div id="footer">
-          Created by <a href="https://aatishb.com/">Aatish Bhatia</a> in collaboration with <a href="https://www.youtube.com/user/minutephysics">Minute Physics</a> &middot; Data provided by <a href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins University</a> &middot; Shortcuts: +/- for daily changes, space to play/pause &middot; <a href="https://github.com/aatishb/covidtrends#credits">Credits & Source</a> &middot; <a href="https://www.cdc.gov/coronavirus/2019-ncov/prepare/prevention.html">Stay safe!</a>
+          Created by <a href="https://aatishb.com/">Aatish Bhatia</a> with <a href="https://www.youtube.com/user/minutephysics">Minute Physics</a> &middot; Data provided by <a href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins University</a> &middot; Shortcuts: +/- for daily changes, space to play/pause &middot; <a href="https://github.com/aatishb/covidtrends#credits">Credits & Source</a> &middot; Modified for US Data by <a href="https://gtri.gatech.edu/">GTRI</a>. <a href="https://www.cdc.gov/coronavirus/2019-ncov/prepare/prevention.html">Stay safe!</a>
         </div>
 
       </div>
@@ -108,11 +108,11 @@
 
         </div>
 
-        <div id="countries">
+        <div id="states">
 
-          <h2>Countries</h2>
+          <h2>States</h2>
 
-          <p>Countries with at least {{minCasesInCountry}} {{selectedData}}</p>
+          <p>States with at least {{minCasesInArea}} {{selectedData}}</p>
 
           <div id="buttonwrapper">
             <button @click="deselectAll">Deselect All</button>
@@ -120,9 +120,9 @@
           </div>
 
           <ul style="padding-top: 0.5rem;">
-            <li v-for="country in countries">
-              <input type="checkbox" :id="country" :value="country" v-model="selectedCountries">
-              <label :for="country">{{country}}</label>
+            <li v-for="state in states">
+              <input type="checkbox" :id="state" :value="state" v-model="selectedStates">
+              <label :for="state">{{state}}</label>
             </li>
           </ul>
 
