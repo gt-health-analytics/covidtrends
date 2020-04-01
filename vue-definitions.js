@@ -615,7 +615,7 @@ let app = new Vue({
 
         selectedScale: 'Logarithmic Scale',
 
-        minCasesInArea: searchObject.hasOwnProperty('minCases') ? searchObject['minCases'] : 1,
+        minCasesInArea: searchObject.hasOwnProperty('minCases') ? searchObject['minCases'] : 25,
 
         dates: [],
 
