@@ -494,7 +494,6 @@ let app = new Vue({
 
             //this.day = this.dates.length;
 
-            const reducer = (accumulator, currentValue) => accumulator + currentValue;
             let myData = [];
             for (let area of areas) {
                 let areaData;
@@ -521,7 +520,7 @@ let app = new Vue({
                     }
 
                     let counts = arr.map(e => e >= this.minCasesInArea ? e : 0);
-                    let total = counts.reduce(reducer);
+                    let total = counts[counts.length - 1];
                     myData.push({
                         area: area,
                         cases: counts,
