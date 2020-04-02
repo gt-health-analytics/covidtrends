@@ -478,7 +478,6 @@ let app = new Vue({
             let areas;
             if (this.viewMode === "counties") {
                 areas = data.filter(r => r['Province_State'] === searchObject['state']).map(e => e[this.lookupKey]).filter(s => s !== '');
-                this.selectedAreas = areas;
             } else {
                 areas = data.map(e => e[this.lookupKey]).filter(s => s !== '');
             }
@@ -495,6 +494,7 @@ let app = new Vue({
 
             //this.day = this.dates.length;
 
+            const reducer = (accumulator, currentValue) => accumulator + currentValue;
             let myData = [];
             for (let area of areas) {
                 let areaData;
@@ -520,16 +520,28 @@ let app = new Vue({
                         area = renameAreas[area];
                     }
 
+                    let counts = arr.map(e => e >= this.minCasesInArea ? e : 0);
+                    let total = counts.reduce(reducer);
                     myData.push({
                         area: area,
-                        cases: arr.map(e => e >= this.minCasesInArea ? e : 0),
+                        cases: counts,
                         slope: slope.map((e, i) => arr[i] >= this.minCasesInArea ? e : NaN),
+                        total: total,
+                        display_total: total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     });
 
                 }
             }
 
             this.covidData = myData.filter(e => this.myMax(...e.cases) >= this.minCasesInArea);
+
+            this.selectedAreas = this.covidData.sort((a, b) => b.total - a.total).slice(0, 10).map(e =>
+                e.area);
+            this.sortedCovidData = this.covidData.sort(function(a, b) {
+                let up_a = a.area.toUpperCase();
+                let up_b = b.area.toUpperCase();
+                return (up_a < up_b) ? -1 : (up_a > up_b) ? 1 : 0;
+            });
             this.areas = this.covidData.map(e => e.area).sort();
 
         },
@@ -697,6 +709,8 @@ let app = new Vue({
         dates: [],
 
         covidData: [],
+
+        sortedCovidData: [],
 
         areas: [],
 

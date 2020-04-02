@@ -123,9 +123,9 @@
         </div>
 
         <ul style="padding-top: 0.5rem;">
-          <li v-for="area in areas">
-            <input type="checkbox" :id="area" :value="area" v-model="selectedAreas">
-            <label :for="area">{{area}}</label>
+          <li v-for="d in sortedCovidData">
+            <input type="checkbox" :id="area" :value="d.area" v-model="selectedAreas">
+            <label :for="area">{{d.area}} <span style="color: dimgray">({{d.display_total}})</span></label>
           </li>
         </ul>
 
