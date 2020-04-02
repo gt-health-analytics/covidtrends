@@ -1,4 +1,25 @@
 // custom graph component
+const allStateList = ['American Samoa', 'Guam', 'Northern Mariana Islands',
+    'Puerto Rico', 'Virgin Islands', 'Alabama', 'Alaska', 'Arizona',
+    'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
+    'District of Columbia', 'Florida', 'Georgia', 'Hawaii', 'Idaho',
+    'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
+    'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
+    'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada',
+    'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
+    'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon',
+    'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota',
+    'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington',
+    'West Virginia', 'Wisconsin', 'Wyoming', 'Diamond Princess',
+    'Grand Princess'];
+const stateList = [
+    'Georgia', 'New York', 'New Jersey', 'California', 'Michigan', 'Louisiana', "Massachusetts", 'Floria', 'Illinois',
+    'Washingon', 'Pennsylvania', 'Connecticut', 'Texas'
+];
+const countryList = ['Australia', 'Canada', 'China', 'France', 'Germany', 'Iran', 'Italy', 'Japan', 'South Korea',
+        'Spain', 'Switzerland', 'US', 'United Kingdom', 'India', 'Pakistan'];
+let countyList = [];
+
 
 // https://www.abeautifulsite.net/parsing-urls-in-javascript
 function parseURL() {
@@ -26,7 +47,33 @@ function parseURL() {
     };
 }
 searchObject = parseURL()['searchObject'];
+
+if (!searchObject.hasOwnProperty('mode')) {
+    searchObject['mode'] = 'states';
+}
+if (searchObject.hasOwnProperty('province')) {
+    searchObject['state'] = searchObject['province'];
+}
+if (!searchObject.hasOwnProperty('state')) {
+    searchObject['state'] = 'Georgia';
+}
+searchObject['state'] = searchObject['state'].replace('%20', ' ');
+if (searchObject['mode'].toLowerCase() === 'global' || searchObject['mode'].toLowerCase() === 'world' || searchObject['mode'].toLowerCase() === 'worldwide') {
+    searchObject['mode'] = 'countries';
+}
+if (searchObject['mode'].toLowerCase() === 'us' || searchObject['mode'] === 'united states' || searchObject['mode'] === 'u.s.' ) {
+    searchObject['mode'] = 'states';
+}
+if (!searchObject.hasOwnProperty('minCases')) {
+    if (searchObject['mode'] === 'states')
+        searchObject['minCases'] = 25;
+    if (searchObject['mode'] === 'countries')
+        searchObject['minCases'] = 50;
+    if (searchObject['mode'] === 'counties')
+        searchObject['minCases'] = 5;
+}
 console.log(searchObject);
+
 
 Vue.component('graph', {
 
@@ -103,8 +150,8 @@ Vue.component('graph', {
             let traces1 = this.data.map((e, i) => ({
                     x: e.cases,
                     y: e.slope,
-                    name: e.state,
-                    text: this.dates.map(f => e.state + '<br>' + f),
+                    name: e.area,
+                    text: this.dates.map(f => e.area + '<br>' + f),
                     mode: showDailyMarkers ? 'lines+markers' : 'lines',
                     type: 'scatter',
                     legendgroup: i,
@@ -123,8 +170,8 @@ Vue.component('graph', {
             let traces2 = this.data.map((e, i) => ({
                     x: [e.cases[e.cases.length - 1]],
                     y: [e.slope[e.slope.length - 1]],
-                    text: e.state,
-                    name: e.state,
+                    text: e.area,
+                    name: e.area,
                     mode: 'markers+text',
                     legendgroup: i,
                     textposition: 'top left',
@@ -156,7 +203,7 @@ Vue.component('graph', {
             }
 
             this.layout = {
-                title: 'Trajectory of COVID-19 ' + this.selectedData + ' (' + this.dates[this.day - 1] + ')',
+                title: 'Trajectory of ' + this.selectedData + ' (' + this.dates[this.day - 1] + ')',
                 showlegend: false,
                 xaxis: {
                     title: 'Total ' + this.selectedData,
@@ -341,8 +388,8 @@ let app = new Vue({
 
             }
 
-            if (urlParameters.has('state')) {
-                this.selectedStates = urlParameters.getAll('state');
+            if (urlParameters.has('area')) {
+                this.selectedAreas = urlParameters.getAll('area');
             }
 
         }
@@ -407,11 +454,16 @@ let app = new Vue({
         pullData(selectedData) {
 
             if (selectedData === 'Confirmed Cases') {
-                Plotly.d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv', this.processData);
-                // Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", this.processData);
+                if (this.viewMode === 'states' || this.viewMode === 'counties')
+                    Plotly.d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv', this.processData);
+                else
+                    Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", this.processData);
             } else if (selectedData === 'Reported Deaths') {
-                // Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", this.processData);
-                Plotly.d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv', this.processData())
+                if (this.viewMode === 'states' || this.viewMode === 'counties')
+                    Plotly.d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv', this.processData())
+                else
+                    Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", this.processData);
+
             }
         },
 
@@ -420,41 +472,56 @@ let app = new Vue({
         },
 
         processData(data) {
+            console.log(this);
+            let areasToLeaveOut = ['Grand Princess'];
 
-            let statesToLeaveOut = ['Grand Princess'];
+            let areas;
+            if (this.viewMode === "counties") {
+                areas = data.filter(r => r['Province_State'] === searchObject['state']).map(e => e[this.lookupKey]).filter(s => s !== '');
+                this.selectedAreas = areas;
+            } else {
+                areas = data.map(e => e[this.lookupKey]).filter(s => s !== '');
+            }
+            areas = this.removeRepeats(areas);
 
-            let renameStates = {};
+            let renameAreas = {
+                'Taiwan*': 'Taiwan',
+                'Korea, South': 'South Korea'
+            };
 
-            let states = data.map(e => e["Province_State"]);
-            states = this.removeRepeats(states);
-
-            let dates = Object.keys(data[0]).slice(11);
+            const offset = this.viewMode === "countries" ? 4 : 11;
+            let dates = Object.keys(data[0]).slice(offset);
             this.dates = dates;
 
             //this.day = this.dates.length;
 
             let myData = [];
-            for (let state of states) {
-                let stateData = data.filter(e => e["Province_State"] === state);
+            for (let area of areas) {
+                let areaData;
+                if (this.viewMode === 'counties') {
+                    areaData = data.filter(e => e[this.lookupKey] === area && e['Province_State'] === searchObject['state']);
+                } else {
+                    areaData = data.filter(e => e[this.lookupKey] === area);
+                }
                 let arr = [];
 
                 for (let date of dates) {
-                    let sum = stateData.map(e => parseInt(e[date]) || 0).reduce((a, b) => a + b);
+                    let sum = areaData.map(e => parseInt(e[date]) || 0).reduce((a, b) => a + b);
                     if (isNaN(sum)) {
                         sum = 0;
                     }
                     arr.push(sum);
                 }
 
-                if (!statesToLeaveOut.includes(state)) {
+                if (!areasToLeaveOut.includes(area)) {
                     let slope = arr.map((e, i, a) => e - a[i - 7]);
 
-                    if (Object.keys(renameStates).includes(state)) {
-                        state = renameStates[state];
+                    if (Object.keys(renameAreas).includes(area)) {
+                        area = renameAreas[area];
                     }
 
                     myData.push({
-                        state: state,
+                        area: area,
                         cases: arr.map(e => e >= this.minCasesInArea ? e : 0),
                         slope: slope.map((e, i) => arr[i] >= this.minCasesInArea ? e : NaN),
                     });
@@ -463,7 +530,7 @@ let app = new Vue({
             }
 
             this.covidData = myData.filter(e => this.myMax(...e.cases) >= this.minCasesInArea);
-            this.states = this.covidData.map(e => e.state).sort();
+            this.areas = this.covidData.map(e => e.area).sort();
 
         },
 
@@ -509,11 +576,11 @@ let app = new Vue({
         },
 
         selectAll() {
-            this.selectedStates = this.states;
+            this.selectedAreas = this.areas;
         },
 
         deselectAll() {
-            this.selectedStates = [];
+            this.selectedAreas = [];
         },
 
         changeScale() {
@@ -537,9 +604,9 @@ let app = new Vue({
                 queryUrl.append('data', 'deaths');
             }
 
-            for (let state of this.states) {
-                if (this.selectedStates.includes(state)) {
-                    queryUrl.append('state', state);
+            for (let area of this.areas) {
+                if (this.selectedAreas.includes(area)) {
+                    queryUrl.append('area', area);
                 }
             }
 
@@ -583,7 +650,7 @@ let app = new Vue({
     computed: {
 
         filteredCovidData() {
-            return this.covidData.filter(e => this.selectedStates.includes(e.state));
+            return this.covidData.filter(e => this.selectedAreas.includes(e.area));
         },
 
         minDay() {
@@ -615,29 +682,27 @@ let app = new Vue({
 
         selectedScale: 'Logarithmic Scale',
 
-        minCasesInArea: searchObject.hasOwnProperty('minCases') ? searchObject['minCases'] : 25,
+        selectedSubArea : searchObject['state'],
+
+        mainName: searchObject['mode'] === "states" ? "U.S." : searchObject['mode'] === "countries" ?  "Global" : searchObject['state'],
+
+        areaName: searchObject['mode'] === "states" ? "States" : searchObject['mode'] === "countries" ?  "Countries" : "Counties",
+
+        viewMode: searchObject['mode'],
+
+        lookupKey:  searchObject['mode'] === "states" ? "Province_State" : searchObject['mode'] === "countries" ? "Country/Region" : "Admin2" ,
+
+        minCasesInArea: searchObject['minCases'],
 
         dates: [],
 
         covidData: [],
 
-        states: [],
+        areas: [],
 
         isHidden: true,
 
-        selectedStates: ['American Samoa', 'Guam', 'Northern Mariana Islands',
-            'Puerto Rico', 'Virgin Islands', 'Alabama', 'Alaska', 'Arizona',
-            'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
-            'District of Columbia', 'Florida', 'Georgia', 'Hawaii', 'Idaho',
-            'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
-            'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
-            'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada',
-            'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
-            'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon',
-            'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota',
-            'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington',
-            'West Virginia', 'Wisconsin', 'Wyoming', 'Diamond Princess',
-            'Grand Princess'],
+        selectedAreas: searchObject['mode'] === "states"  ? stateList : searchObject['mode'] === "countries"?  countryList : countyList ,
 
         graphMounted: false,
 

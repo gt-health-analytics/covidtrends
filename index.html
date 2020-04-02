@@ -54,7 +54,10 @@
   <div id="content">
 
     <div id="left-column">
+      <div align="center">
+        <h2 style="margin: 0; font-family: Georgia, Times, 'Times New Roman', serif">{{mainName}} COVID-19 Cases</h2>
 
+      </div>
       <graph v-if="covidData.length > 0" :data="filteredCovidData" :dates="dates" :day.sync="day" :selected-data="selectedData" :scale="selectedScale" :resize="isHidden" @graph-mounted="graphMounted = true"></graph>
 
       <div id="nav">
@@ -108,11 +111,11 @@
 
       </div>
 
-      <div id="states">
+      <div id="areas">
 
-        <h2>States</h2>
+        <h2>{{areaName}}</h2>
 
-        <p>States with at least {{minCasesInArea}} {{selectedData}}</p>
+        <p style="font-size: 0.7rem; text-align: center;">(With at least {{minCasesInArea}} {{selectedData}})</p>
 
         <div id="buttonwrapper">
           <button @click="deselectAll">Deselect All</button>
@@ -120,9 +123,9 @@
         </div>
 
         <ul style="padding-top: 0.5rem;">
-          <li v-for="state in states">
-            <input type="checkbox" :id="state" :value="state" v-model="selectedStates">
-            <label :for="state">{{state}}</label>
+          <li v-for="area in areas">
+            <input type="checkbox" :id="area" :value="area" v-model="selectedAreas">
+            <label :for="area">{{area}}</label>
           </li>
         </ul>
 
@@ -131,9 +134,9 @@
 
       <div>
 
-        <div id="buttonwrapper">
-          <button @click="createURL" @mousedown="pause">{{copied ? 'Link Copied to Clipboard!' : 'Create Shareable Link'}}</button>
-        </div>
+<!--        <div id="buttonwrapper">-->
+<!--          <button @click="createURL" @mousedown="pause">{{copied ? 'Link Copied to Clipboard!' : 'Create Shareable Link'}}</button>-->
+<!--        </div>-->
 
       </div>
 
