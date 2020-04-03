@@ -129,7 +129,7 @@ p {
 }
 
 #content h2 {
-  color: #fe346e;
+  color: #009688;
 }
 
 #left-column {
@@ -202,7 +202,7 @@ p {
 }
 
 svg {
-  fill: #fe346e;
+  fill: #00bfa5;
 }
 
 #hide {
@@ -232,15 +232,15 @@ button {
 
   transition-duration: 0.4s;
 
-  background-color: #fe346e;
+  background-color: #00bfa5;
   color: lightgoldenrodyellow;
-  border: 0.125rem solid #fe346e;
+  border: 0.125rem solid #00bfa5;
   border-radius: 0.25rem;
 }
 
 button:hover {
-  background-color: #b80d57;
-  border: 0.125rem solid #b80d57;
+  background-color: #009688;
+  border: 0.125rem solid #009688;
   color: lightgoldenrodyellow;
 }
 

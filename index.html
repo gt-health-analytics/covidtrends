@@ -55,7 +55,7 @@
 
     <div id="left-column">
       <div align="center">
-        <h2 style="margin: 0; font-family: Georgia, Times, 'Times New Roman', serif">{{mainName}} COVID-19 Cases</h2>
+        <h2 style="margin: 0">{{mainName}} COVID-19 Cases</h2>
 
       </div>
       <graph v-if="covidData.length > 0" :data="filteredCovidData" :dates="dates" :day.sync="day" :selected-data="selectedData" :scale="selectedScale" :resize="isHidden" @graph-mounted="graphMounted = true"></graph>

@@ -125,7 +125,7 @@ Vue.component('graph', {
             let name = this.traces[curveNumber].name;
             this.traceIndices = this.traces.map((e, i) => e.name === name ? i : -1).filter(e => e >= 0);
 
-            let update = {'line': {color: 'rgba(254, 52, 110, 1)'}};
+            let update = {'line': {color: 'rgb(0,150,136)'}};
 
             for (let i of this.traceIndices) {
                 Plotly.restyle(this.$refs.graph, update, [i]);
@@ -156,14 +156,16 @@ Vue.component('graph', {
                     type: 'scatter',
                     legendgroup: i,
                     marker: {
-                        size: 4,
+                        size: 6,
                         color: 'rgba(0,0,0,0.15)'
                     },
                     line: {
                         color: 'rgba(0,0,0,0.15)'
                     },
                     hoverinfo: 'x+y+text',
-                    hovertemplate: '%{text}<br>Total ' + this.selectedData + ': %{x:,}<br>Weekly ' + this.selectedData + ': %{y:,}<extra></extra>',
+                    hovertemplate: '%{text}<br>Total ' + this.selectedData + ': %{x:,}' +
+                        '<br>Weekly ' + this.selectedData + ': %{y:,}' +
+                        '<extra></extra>',
                 })
             );
 
@@ -176,10 +178,13 @@ Vue.component('graph', {
                     legendgroup: i,
                     textposition: 'top left',
                     marker: {
-                        size: 6,
-                        color: 'rgba(254, 52, 110, 1)'
+                        size: 8,
+                        color: 'rgb(0,150,136)'
                     },
-                    hovertemplate: '%{data.text}<br>Total ' + this.selectedData + ': %{x:,}<br>Weekly ' + this.selectedData + ': %{y:,}<extra></extra>',
+                    hovertemplate: '%{data.text}<br>Total ' + this.selectedData + ': %{x:,}' +
+                        '<br>Weekly ' + this.selectedData + ': %{y:,}' +
+                        '<br>' +
+                        '<extra></extra>',
 
                 })
             );
@@ -211,7 +216,7 @@ Vue.component('graph', {
                     range: this.xrange,
                     titlefont: {
                         size: 24,
-                        color: 'rgba(254, 52, 110,1)'
+                        color: 'rgba(0, 191, 165, 1)'
                     },
                 },
                 yaxis: {
@@ -220,7 +225,7 @@ Vue.component('graph', {
                     range: this.yrange,
                     titlefont: {
                         size: 24,
-                        color: 'rgba(254, 52, 110,1)'
+                        color: 'rgba(0, 191, 165, 1)'
                     },
                 },
                 hovermode: 'closest',
@@ -534,7 +539,7 @@ let app = new Vue({
 
             this.covidData = myData.filter(e => this.myMax(...e.cases) >= this.minCasesInArea);
 
-            this.selectedAreas = this.covidData.sort((a, b) => b.total - a.total).slice(0, 10).map(e =>
+            this.selectedAreas = this.covidData.sort((a, b) => b.total - a.total).slice(0, 15).map(e =>
                 e.area);
             this.sortedCovidData = this.covidData.sort(function(a, b) {
                 let up_a = a.area.toUpperCase();
