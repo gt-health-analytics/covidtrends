@@ -12,41 +12,38 @@
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 
+  <script src="https://kit.fontawesome.com/b98e6f5f36.js" crossorigin="anonymous"></script>
+
 </head>
 <body>
 
 <div id="root">
 
-  <div >
+  <div id="header">
 
-<!--    <div id="explainer">-->
-<!--      <p>This interactive charts the <b><i>new</i></b> {{selectedData.toLowerCase()}} of COVID-19 in the past week vs. the <b><i>total</i></b> {{selectedData.toLowerCase()}} to date. When plotted in this way, exponential growth is represented as a straight line that slopes upwards. Notice that almost all areas follow a very similar path of exponential growth. <i>We're all in this together.</i> <span v-if="isHidden"><a @click="toggleHide">Learn more.</a></span></p>-->
+    <div id="explainer">
+      <p>This interactive charts the <b><i>new</i></b> {{selectedData.toLowerCase()}} of COVID-19 in the past week vs. the <b><i>total</i></b> {{selectedData.toLowerCase()}} to date. When plotted in this way, exponential growth is represented as a straight line that slopes upwards. Notice that almost all areas follow a very similar path of exponential growth. <i>We're all in this together.</i> <span v-if="isHidden"><a @click="toggleHide">Learn more.</a></span></p>
 
-<!--      <span v-if="!isHidden">-->
+      <span v-if="!isHidden">
 
-<!--            <p>To learn more about this graph, watch this video created by Minute Physics.</p>-->
-<!--            <br>-->
+            <p>To learn more about this graph, watch this video created by Minute Physics.</p>
+            <br>
 
-<!--            <iframe width="560" height="315" src="https://www.youtube.com/embed/54XLXg4fYsc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/54XLXg4fYsc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-<!--            <p><i><b>Note:</b> The x-axis of this graph is not time</i>, but is instead the total number of cases or deaths.</p>-->
+            <p><i><b>Note:</b> The x-axis of this graph is not time</i>, but is instead the total number of cases or deaths.</p>
 
-<!--            <p><b>Tips:</b> Press Space (or the play button) to Play/Pause. Press +/- keys (or drag the slider) to see daily changes. Hover over the graph for more info. Drag your mouse to zoom in, doubleclick to zoom back out. And don't forget to wash your hands!</p>-->
+            <p><b>Tips:</b> Press Space (or the play button) to Play/Pause. Press +/- keys (or drag the slider) to see daily changes. Hover over the graph for more info. Drag your mouse to zoom in, doubleclick to zoom back out. And don't forget to wash your hands!</p>
 
-<!--            <a id="hide" @click="toggleHide">Hide</a>-->
-<!--          </span>-->
-<!--    </div>-->
+            <a id="hide" @click="toggleHide">Hide</a>
+          </span>
+    </div>
 
-<!--    <div id="logowrapper">-->
+    <div id="logowrapper">
 
-<!--      <h1><a href="https://aatishb.com/covidtrends">Covid Trends</a></h1>-->
+      <h1><a href="https://aatishb.com/covidtrends">Covid Trends</a></h1>
 
-<!--      <div v-if="!isHidden" id="logos">-->
-<!--        <a href="https://aatishb.com/"><img src="logos/aatishb-bw.png" height="40"></img></a>-->
-<!--        <a href="https://www.youtube.com/user/minutephysics"><img src="logos/minutephysics-invert.png" height="40"></img></a>-->
-<!--      </div>-->
-
-<!--    </div>-->
+    </div>
 
 
   </div>
@@ -87,7 +84,14 @@
 
 
       <div id="footer">
-        Created by <a href="https://aatishb.com/">Aatish Bhatia</a> with <a href="https://www.youtube.com/user/minutephysics">Minute Physics</a> &middot; Data provided by <a href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins University</a> &middot; Shortcuts: +/- for daily changes, space to play/pause &middot; <a href="https://github.com/aatishb/covidtrends#credits">Credits & Source</a> &middot; Modified for US Data by <a href="https://gtri.gatech.edu/">GTRI</a> (<a href="https://github.com/gt-health-analytics/covidtrends">Source</a>). <a href="https://www.cdc.gov/coronavirus/2019-ncov/prepare/prevention.html">Stay safe!</a>
+        Created by <a href="https://aatishb.com/">Aatish Bhatia</a> with
+        <a href="https://www.youtube.com/user/minutephysics">Minute Physics</a> &middot;
+        Data provided by <a v-bind:href="dataSourceMainUrl">{{dataSourceName}}</a> &middot;
+        Shortcuts: +/- for daily changes, space to play/pause &middot;
+        <a href="https://github.com/aatishb/covidtrends#credits">Credits & Source</a> &middot;
+        Modified for US Data by <a href="https://gtri.gatech.edu/">GTRI</a>
+        (<a href="https://github.com/gt-health-analytics/covidtrends">Source</a>).
+        <a href="https://www.cdc.gov/coronavirus/2019-ncov/prepare/prevention.html">Stay safe!</a>
       </div>
 
     </div>
@@ -96,6 +100,12 @@
 
       <div>
         <h2>Customize</h2>
+
+
+        <div id="areabuttonwrapper" class="buttonwrapper">
+          <button v-if="!globalView" @click="showGlobal">Global Data</button>
+          <button v-if="!usView" @click="showUS">U.S. Data</button>
+        </div>
 
         <select v-model="selectedData" @mousedown="pause">
           <option v-for="d in dataTypes" v-bind:value="d">
@@ -109,6 +119,8 @@
           </option>
         </select>
 
+
+
       </div>
 
       <div id="areas">
@@ -117,15 +129,20 @@
 
         <p style="font-size: 0.7rem; text-align: center;">(With at least {{minCasesInArea}} {{selectedData}})</p>
 
-        <div id="buttonwrapper">
+        <div id="buttonwrapper" class="buttonwrapper">
           <button @click="deselectAll">Deselect All</button>
           <button @click="selectAll">Select All</button>
         </div>
 
         <ul style="padding-top: 0.5rem;">
           <li v-for="d in sortedCovidData">
-            <input type="checkbox" :id="area" :value="d.area" v-model="selectedAreas">
-            <label :for="area">{{d.area}} <span style="color: dimgray">({{d.display_total}})</span></label>
+            <input type="checkbox" :value="d.area" v-model="selectedAreas">
+            <label>
+              <span>{{d.area}}</span>
+              <span  v-if="usView" @click="showState(d.area)" class="detail-link">({{d.display_total}})</span>
+              <span  v-if="!usView" @click="showState(d.area)" class="detail-info">({{d.display_total}})</span>
+            </label>
+            <span v-if="usView" class="detail-link" @click="showState(d.area)"><i class="fas fa-external-link-alt"></i></span>
           </li>
         </ul>
 
@@ -155,21 +172,6 @@
 
 </body>
 
-
-<!-- Twitter Card data -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Covid Trends">
-<meta name="twitter:description" content="Visualizing the exponential growth of COVID-19 across the world.">
-<meta name="twitter:site" content="@aatishb">
-<!-- Twitter Summary card images must be at least 120x120px -->
-<meta name="twitter:image" content="https://aatishb.com/covidtrends/logos/covid-trends-logo-nowords.png">
-
-<!-- Open Graph data -->
-<meta property="og:title" content="Covid Trends" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://aatishb.com/covidtrends/" />
-<meta property="og:image" content="https://aatishb.com/covidtrends/logos/covid-trends-logo-nowords.png" />
-<meta property="og:description" content="Visualizing the exponential growth of COVID-19 across the world." />
 
 
 </html>

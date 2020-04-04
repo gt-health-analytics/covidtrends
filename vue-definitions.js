@@ -1,27 +1,122 @@
 // custom graph component
-const allStateList = ['American Samoa', 'Guam', 'Northern Mariana Islands',
-    'Puerto Rico', 'Virgin Islands', 'Alabama', 'Alaska', 'Arizona',
-    'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware',
-    'District of Columbia', 'Florida', 'Georgia', 'Hawaii', 'Idaho',
-    'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
-    'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
-    'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada',
-    'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
-    'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon',
-    'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota',
-    'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington',
-    'West Virginia', 'Wisconsin', 'Wyoming', 'Diamond Princess',
-    'Grand Princess'];
-const stateList = [
-    'Georgia', 'New York', 'New Jersey', 'California', 'Michigan', 'Louisiana', "Massachusetts", 'Floria', 'Illinois',
-    'Washingon', 'Pennsylvania', 'Connecticut', 'Texas'
-];
-const countryList = ['Australia', 'Canada', 'China', 'France', 'Germany', 'Iran', 'Italy', 'Japan', 'South Korea',
-        'Spain', 'Switzerland', 'US', 'United Kingdom', 'India', 'Pakistan'];
-let countyList = [];
-
-
 // https://www.abeautifulsite.net/parsing-urls-in-javascript
+const us_state_abbrev = {
+    'Alabama': 'AL',
+    'Alaska': 'AK',
+    'Arizona': 'AZ',
+    'Arkansas': 'AR',
+    'California': 'CA',
+    'Colorado': 'CO',
+    'Connecticut': 'CT',
+    'Delaware': 'DE',
+    'District Of Columbia': 'DC',
+    'Florida': 'FL',
+    'Georgia': 'GA',
+    'Hawaii': 'HI',
+    'Idaho': 'ID',
+    'Illinois': 'IL',
+    'Indiana': 'IN',
+    'Iowa': 'IA',
+    'Kansas': 'KS',
+    'Kentucky': 'KY',
+    'Louisiana': 'LA',
+    'Maine': 'ME',
+    'Maryland': 'MD',
+    'Massachusetts': 'MA',
+    'Michigan': 'MI',
+    'Minnesota': 'MN',
+    'Mississippi': 'MS',
+    'Missouri': 'MO',
+    'Montana': 'MT',
+    'Nebraska': 'NE',
+    'Nevada': 'NV',
+    'New Hampshire': 'NH',
+    'New Jersey': 'NJ',
+    'New Mexico': 'NM',
+    'New York': 'NY',
+    'North Carolina': 'NC',
+    'North Dakota': 'ND',
+    'Northern Mariana Islands': 'MP',
+    'Ohio': 'OH',
+    'Oklahoma': 'OK',
+    'Oregon': 'OR',
+    'Palau': 'PW',
+    'Pennsylvania': 'PA',
+    'Puerto Rico': 'PR',
+    'Rhode Island': 'RI',
+    'South Carolina': 'SC',
+    'South Dakota': 'SD',
+    'Tennessee': 'TN',
+    'Texas': 'TX',
+    'Utah': 'UT',
+    'Vermont': 'VT',
+    'Virgin Islands': 'VI',
+    'Virginia': 'VA',
+    'Washington': 'WA',
+    'West Virginia': 'WV',
+    'Wisconsin': 'WI',
+    'Wyoming': 'WY',
+    "Guam": "GU"
+};
+const abbrev_us_state = {
+    "AL": "Alabama",
+    "AK": "Alaska",
+    "AZ": "Arizona",
+    "AR": "Arkansas",
+    "CA": "California",
+    "CO": "Colorado",
+    "CT": "Connecticut",
+    "DE": "Delaware",
+    "DC": "District Of Columbia",
+    "FL": "Florida",
+    "GA": "Georgia",
+    "HI": "Hawaii",
+    "ID": "Idaho",
+    "IL": "Illinois",
+    "IN": "Indiana",
+    "IA": "Iowa",
+    "KS": "Kansas",
+    "KY": "Kentucky",
+    "LA": "Louisiana",
+    "ME": "Maine",
+    "MD": "Maryland",
+    "MA": "Massachusetts",
+    "MI": "Michigan",
+    "MN": "Minnesota",
+    "MS": "Mississippi",
+    "MO": "Missouri",
+    "MT": "Montana",
+    "NE": "Nebraska",
+    "NV": "Nevada",
+    "NH": "New Hampshire",
+    "NJ": "New Jersey",
+    "NM": "New Mexico",
+    "NY": "New York",
+    "NC": "North Carolina",
+    "ND": "North Dakota",
+    "MP": "Northern Mariana Islands",
+    "OH": "Ohio",
+    "OK": "Oklahoma",
+    "OR": "Oregon",
+    "PW": "Palau",
+    "PA": "Pennsylvania",
+    "PR": "Puerto Rico",
+    "RI": "Rhode Island",
+    "SC": "South Carolina",
+    "SD": "South Dakota",
+    "TN": "Tennessee",
+    "TX": "Texas",
+    "UT": "Utah",
+    "VT": "Vermont",
+    "VI": "Virgin Islands",
+    "VA": "Virginia",
+    "WA": "Washington",
+    "WV": "West Virginia",
+    "WI": "Wisconsin",
+    "WY": "Wyoming",
+    "GU": "Guam"
+};
+
 function parseURL() {
     const url = window.location;
     let parser = document.createElement('a'),
@@ -46,6 +141,7 @@ function parseURL() {
         hash: parser.hash
     };
 }
+
 searchObject = parseURL()['searchObject'];
 
 if (!searchObject.hasOwnProperty('mode')) {
@@ -55,13 +151,21 @@ if (searchObject.hasOwnProperty('province')) {
     searchObject['state'] = searchObject['province'];
 }
 if (!searchObject.hasOwnProperty('state')) {
-    searchObject['state'] = 'Georgia';
+    searchObject['state'] = 'GA';
 }
-searchObject['state'] = searchObject['state'].replace('%20', ' ');
+let stateParam = searchObject['state'].replace('%20', ' ');
+if (us_state_abbrev.hasOwnProperty(stateParam)) {
+    stateParam = us_state_abbrev[stateParam];
+}
+searchObject['state'] = stateParam;
+if (!abbrev_us_state.hasOwnProperty(searchObject['state'])) {
+    searchObject['mode'] = 'states';
+    searchObject['state'] = 'GA';
+}
 if (searchObject['mode'].toLowerCase() === 'global' || searchObject['mode'].toLowerCase() === 'world' || searchObject['mode'].toLowerCase() === 'worldwide') {
     searchObject['mode'] = 'countries';
 }
-if (searchObject['mode'].toLowerCase() === 'us' || searchObject['mode'] === 'united states' || searchObject['mode'] === 'u.s.' ) {
+if (searchObject['mode'].toLowerCase() === 'us' || searchObject['mode'] === 'united states' || searchObject['mode'] === 'u.s.') {
     searchObject['mode'] = 'states';
 }
 if (!searchObject.hasOwnProperty('minCases')) {
@@ -77,7 +181,7 @@ console.log(searchObject);
 
 Vue.component('graph', {
 
-    props: ['data', 'dates', 'day', 'selectedData', 'scale', 'resize'],
+    props: ['data', 'dates', 'day', 'selectedData', 'scale', 'resize', 'viewMode', 'selectedSubArea'],
 
     template: '<div ref="graph" id="graph" style="height: 100%;"></div>',
 
@@ -125,7 +229,7 @@ Vue.component('graph', {
             let name = this.traces[curveNumber].name;
             this.traceIndices = this.traces.map((e, i) => e.name === name ? i : -1).filter(e => e >= 0);
 
-            let update = {'line': {color: 'rgb(0,150,136)'}};
+            let update = {'line': {color: 'rgb(230,74,25)'}};
 
             for (let i of this.traceIndices) {
                 Plotly.restyle(this.$refs.graph, update, [i]);
@@ -179,7 +283,7 @@ Vue.component('graph', {
                     textposition: 'top left',
                     marker: {
                         size: 8,
-                        color: 'rgb(0,150,136)'
+                        color: 'rgb(230,74,25)'
                     },
                     hovertemplate: '%{data.text}<br>Total ' + this.selectedData + ': %{x:,}' +
                         '<br>Weekly ' + this.selectedData + ': %{y:,}' +
@@ -216,7 +320,7 @@ Vue.component('graph', {
                     range: this.xrange,
                     titlefont: {
                         size: 24,
-                        color: 'rgba(0, 191, 165, 1)'
+                        color: 'rgb(230,74,25)'
                     },
                 },
                 yaxis: {
@@ -225,7 +329,7 @@ Vue.component('graph', {
                     range: this.yrange,
                     titlefont: {
                         size: 24,
-                        color: 'rgba(0, 191, 165, 1)'
+                        color: 'rgb(230,74,25)'
                     },
                 },
                 hovermode: 'closest',
@@ -322,7 +426,11 @@ Vue.component('graph', {
         data() {
             //console.log('data change detected');
             this.makeGraph();
+        },
+        viewMode() {
+            this.makeGraph()
         }
+
 
     },
 
@@ -435,7 +543,50 @@ let app = new Vue({
     },
 
     methods: {
+        showState(state) {
+            console.log(state);
+            let selectedState = state;
+            if (us_state_abbrev.hasOwnProperty(state)) {
+                selectedState = us_state_abbrev[state];
+            }
+            this.selectedSubArea = selectedState;
+            this.viewMode = 'counties';
+            this.mainName = state;
+            this.areaName = "Counties";
+            this.usView = false;
+            this.globalView = false;
+            this.lookupKey = "County Name";
+            this.selectedAreas = [];
+            this.covidData = [];
+            this.pullData(this.selectedData);
+        },
 
+        showGlobal() {
+            this.selectedSubArea = "GA";
+            this.viewMode = 'countries';
+            this.mainName = "Global";
+            this.areaName = "Countries";
+            this.usView = false;
+            this.globalView = true;
+            this.lookupKey = "Country/Region" ;
+            this.selectedAreas = [];
+            this.covidData = [];
+            this.pullData(this.selectedData);
+        },
+
+        showUS() {
+            this.selectedSubArea = "GA";
+            this.viewMode = 'states';
+            this.mainName = "U.S.";
+            this.areaName = "States";
+            this.usView = true;
+            this.globalView = false;
+            this.lookupKey = "State";
+            this.selectedAreas = [];
+            this.covidData = [];
+            this.pullData(this.selectedData);
+
+        },
         myMax() { //https://stackoverflow.com/a/12957522
             let par = [];
             for (let i = 0; i < arguments.length; i++) {
@@ -457,15 +608,14 @@ let app = new Vue({
         },
 
         pullData(selectedData) {
-
             if (selectedData === 'Confirmed Cases') {
                 if (this.viewMode === 'states' || this.viewMode === 'counties')
-                    Plotly.d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_US.csv', this.processData);
+                    Plotly.d3.csv('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv', this.processData);
                 else
                     Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", this.processData);
             } else if (selectedData === 'Reported Deaths') {
                 if (this.viewMode === 'states' || this.viewMode === 'counties')
-                    Plotly.d3.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_US.csv', this.processData())
+                    Plotly.d3.csv('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv', this.processData());
                 else
                     Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", this.processData);
 
@@ -482,7 +632,7 @@ let app = new Vue({
 
             let areas;
             if (this.viewMode === "counties") {
-                areas = data.filter(r => r['Province_State'] === searchObject['state']).map(e => e[this.lookupKey]).filter(s => s !== '');
+                areas = data.filter(r => r['State'] === this.selectedSubArea).map(e => e[this.lookupKey]).filter(s => s !== '');
             } else {
                 areas = data.map(e => e[this.lookupKey]).filter(s => s !== '');
             }
@@ -493,7 +643,7 @@ let app = new Vue({
                 'Korea, South': 'South Korea'
             };
 
-            const offset = this.viewMode === "countries" ? 4 : 11;
+            const offset = 4;
             let dates = Object.keys(data[0]).slice(offset);
             this.dates = dates;
 
@@ -503,7 +653,7 @@ let app = new Vue({
             for (let area of areas) {
                 let areaData;
                 if (this.viewMode === 'counties') {
-                    areaData = data.filter(e => e[this.lookupKey] === area && e['Province_State'] === searchObject['state']);
+                    areaData = data.filter(e => e[this.lookupKey] === area && e['State'] === this.selectedSubArea);
                 } else {
                     areaData = data.filter(e => e[this.lookupKey] === area);
                 }
@@ -526,8 +676,16 @@ let app = new Vue({
 
                     let counts = arr.map(e => e >= this.minCasesInArea ? e : 0);
                     let total = counts[counts.length - 1];
+                    let areaName = area;
+
+                    if (this.viewMode === 'states') {
+                        if (abbrev_us_state.hasOwnProperty(area)) {
+                            areaName = abbrev_us_state[area];
+                        }
+                    }
+
                     myData.push({
-                        area: area,
+                        area: areaName,
                         cases: counts,
                         slope: slope.map((e, i) => arr[i] >= this.minCasesInArea ? e : NaN),
                         total: total,
@@ -541,7 +699,7 @@ let app = new Vue({
 
             this.selectedAreas = this.covidData.sort((a, b) => b.total - a.total).slice(0, 15).map(e =>
                 e.area);
-            this.sortedCovidData = this.covidData.sort(function(a, b) {
+            this.sortedCovidData = this.covidData.sort(function (a, b) {
                 let up_a = a.area.toUpperCase();
                 let up_b = b.area.toUpperCase();
                 return (up_a < up_b) ? -1 : (up_a > up_b) ? 1 : 0;
@@ -605,60 +763,6 @@ let app = new Vue({
 
         toggleHide() {
             this.isHidden = !this.isHidden;
-        },
-
-        createURL() {
-            let baseUrl = 'https://aatishb.com/covidtrends/?';
-
-            let queryUrl = new URLSearchParams();
-
-            if (this.selectedScale === 'Linear Scale') {
-                queryUrl.append('scale', 'linear');
-            }
-
-            if (this.selectedData === 'Reported Deaths') {
-                queryUrl.append('data', 'deaths');
-            }
-
-            for (let area of this.areas) {
-                if (this.selectedAreas.includes(area)) {
-                    queryUrl.append('area', area);
-                }
-            }
-
-            let url = baseUrl + queryUrl.toString();
-
-            window.history.replaceState({}, 'Covid Trends', '?' + queryUrl.toString());
-
-            this.copyToClipboard(url);
-            //alert('Here\'s a custom URL to pull up this view:\n' + url);
-
-
-        },
-
-        // code to copy a string to the clipboard
-        // from https://hackernoon.com/copying-text-to-clipboard-with-javascript-df4d4988697f
-        copyToClipboard(str) {
-            const el = document.createElement('textarea');  // Create a <textarea> element
-            el.value = str;                                 // Set its value to the string that you want copied
-            el.setAttribute('readonly', '');                // Make it readonly to be tamper-proof
-            el.style.position = 'absolute';
-            el.style.left = '-9999px';                      // Move outside the screen to make it invisible
-            document.body.appendChild(el);                  // Append the <textarea> element to the HTML document
-            const selected =
-                document.getSelection().rangeCount > 0        // Check if there is any content selected previously
-                    ? document.getSelection().getRangeAt(0)     // Store selection if found
-                    : false;                                    // Mark as false to know no selection existed before
-            el.select();                                    // Select the <textarea> content
-            document.execCommand('copy');                   // Copy - only works as a result of a user action (e.g. click events)
-            document.body.removeChild(el);                  // Remove the <textarea> element
-            if (selected) {                                 // If a selection existed before copying
-                document.getSelection().removeAllRanges();    // Unselect everything on the HTML document
-                document.getSelection().addRange(selected);   // Restore the original selection
-            }
-
-            this.copied = true;
-            setTimeout(() => this.copied = false, 2500);
         }
 
     },
@@ -698,15 +802,19 @@ let app = new Vue({
 
         selectedScale: 'Logarithmic Scale',
 
-        selectedSubArea : searchObject['state'],
+        selectedSubArea: searchObject['state'],
 
-        mainName: searchObject['mode'] === "states" ? "U.S." : searchObject['mode'] === "countries" ?  "Global" : searchObject['state'],
+        mainName: searchObject['mode'] === "states" ? "U.S." : searchObject['mode'] === "countries" ? "Global" : searchObject['state'],
 
-        areaName: searchObject['mode'] === "states" ? "States" : searchObject['mode'] === "countries" ?  "Countries" : "Counties",
+        areaName: searchObject['mode'] === "states" ? "States" : searchObject['mode'] === "countries" ? "Countries" : "Counties",
 
         viewMode: searchObject['mode'],
 
-        lookupKey:  searchObject['mode'] === "states" ? "Province_State" : searchObject['mode'] === "countries" ? "Country/Region" : "Admin2" ,
+        usView: searchObject['mode'] === "states",
+
+        globalView: searchObject['mode'] === 'countries',
+
+        lookupKey: searchObject['mode'] === "states" ? "State" : searchObject['mode'] === "countries" ? "Country/Region" : "County Name",
 
         minCasesInArea: searchObject['minCases'],
 
@@ -720,13 +828,18 @@ let app = new Vue({
 
         isHidden: true,
 
-        selectedAreas: searchObject['mode'] === "states"  ? stateList : searchObject['mode'] === "countries"?  countryList : countyList ,
+        selectedAreas: [],
 
         graphMounted: false,
 
         autoplay: true,
 
         copied: false,
+
+        dataSourceMainUrl: searchObject['mode'] === "countries" ? 'https://github.com/CSSEGISandData/COVID-19' :
+            'https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/',
+
+        dataSourceName: searchObject['mode'] === "countries" ? "Johns Hopkins University" : 'USAFacts'
 
     }
 

@@ -92,7 +92,7 @@ p {
 
 #header {
   color: white;
-  background-image: linear-gradient(to bottom, #2c003e, #721b65); /*#512b58*/
+  background-image: linear-gradient(to bottom, #590f0f, #b71c1c); /*#512b58*/
   position: relative;
   display: flex;
   padding: 0.75rem;
@@ -129,7 +129,7 @@ p {
 }
 
 #content h2 {
-  color: #009688;
+  color: #d84315;
 }
 
 #left-column {
@@ -202,7 +202,7 @@ p {
 }
 
 svg {
-  fill: #00bfa5;
+  fill: #e64a19;
 }
 
 #hide {
@@ -213,13 +213,21 @@ svg {
   right: 0;
 }
 
-#buttonwrapper {
+.buttonwrapper {
   width: 100%;
   display:flex;
   flex-direction: row;
   flex-wrap: wrap;
-
   justify-content: space-between;
+}
+
+.buttonwrapper > button {
+
+  cursor: pointer;
+}
+
+#areabuttonwrapper {
+  margin-bottom: 10px;
 }
 
 button {
@@ -232,15 +240,15 @@ button {
 
   transition-duration: 0.4s;
 
-  background-color: #00bfa5;
+  background-color: #e64a19;
   color: lightgoldenrodyellow;
-  border: 0.125rem solid #00bfa5;
+  border: 0.125rem solid #e64a19;
   border-radius: 0.25rem;
 }
 
 button:hover {
-  background-color: #009688;
-  border: 0.125rem solid #009688;
+  background-color: #d84315;
+  border: 0.125rem solid #d84315;
   color: lightgoldenrodyellow;
 }
 
@@ -258,4 +266,15 @@ select {
 
 select:first-child {
   margin-top: 0;
+}
+
+.detail-link {
+  cursor: pointer;
+  color: dimgray;
+  font-size: 80%;
+}
+
+.detail-info {
+  color: dimgray;
+  font-size: 80%;
 }
