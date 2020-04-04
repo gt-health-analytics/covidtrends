@@ -221,6 +221,15 @@ svg {
   justify-content: space-between;
 }
 
+.edge_right {
+  text-align: right;
+  padding: 2px;
+}
+.edge_left {
+  text-align: left;
+  padding: 2px;
+}
+
 .buttonwrapper > button {
 
   cursor: pointer;
@@ -229,7 +238,9 @@ svg {
 #areabuttonwrapper {
   margin-bottom: 10px;
 }
-
+#buttonwrapper-edge {
+  margin-top: 10px;
+}
 button {
   padding: 0.3rem;
   margin: auto;
@@ -250,6 +261,17 @@ button:hover {
   background-color: #d84315;
   border: 0.125rem solid #d84315;
   color: lightgoldenrodyellow;
+}
+
+
+.edge_ranges {
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.edge_ranges:hover {
+  font-weight: bold;
 }
 
 #countries button {

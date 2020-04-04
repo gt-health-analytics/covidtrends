@@ -558,6 +558,8 @@ let app = new Vue({
             this.lookupKey = "County Name";
             this.selectedAreas = [];
             this.covidData = [];
+            this.dataSourceMainUrl = 'https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/';
+            this.dataSourceName = 'USAFacts';
             this.pullData(this.selectedData);
         },
 
@@ -571,6 +573,8 @@ let app = new Vue({
             this.lookupKey = "Country/Region" ;
             this.selectedAreas = [];
             this.covidData = [];
+            this.dataSourceMainUrl = 'https://github.com/CSSEGISandData/COVID-19';
+            this.dataSourceName = "Johns Hopkins University";
             this.pullData(this.selectedData);
         },
 
@@ -584,7 +588,10 @@ let app = new Vue({
             this.lookupKey = "State";
             this.selectedAreas = [];
             this.covidData = [];
+            this.dataSourceMainUrl = 'https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/';
+            this.dataSourceName = 'USAFacts';
             this.pullData(this.selectedData);
+
 
         },
         myMax() { //https://stackoverflow.com/a/12957522
@@ -615,6 +622,7 @@ let app = new Vue({
                     Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", this.processData);
             } else if (selectedData === 'Reported Deaths') {
                 if (this.viewMode === 'states' || this.viewMode === 'counties')
+                    //             https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv
                     Plotly.d3.csv('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv', this.processData());
                 else
                     Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", this.processData);
@@ -627,7 +635,11 @@ let app = new Vue({
         },
 
         processData(data) {
-            console.log(this);
+            if (data === undefined) {
+                print('bad data');
+                this.covidData = [];
+                return;
+            }
             let areasToLeaveOut = ['Grand Princess'];
 
             let areas;
@@ -697,8 +709,19 @@ let app = new Vue({
 
             this.covidData = myData.filter(e => this.myMax(...e.cases) >= this.minCasesInArea);
 
-            this.selectedAreas = this.covidData.sort((a, b) => b.total - a.total).slice(0, 15).map(e =>
-                e.area);
+            const sortedAreas = this.covidData.sort((a, b) => b.total - a.total);
+            if (sortedAreas.length <= this.edgeMode) {
+                this.topAreas = sortedAreas.map(e => e.area);
+                this.bottomAreas = this.topAreas;
+            } else {
+                this.topAreas = sortedAreas.slice(0, this.edgeWindow).map(e =>
+                    e.area);
+                let last = sortedAreas.length - 1;
+                this.bottomAreas = sortedAreas.slice(last - this.edgeWindow).map(e =>
+                    e.area);
+            }
+
+            this.selectedAreas = this.topAreas;
             this.sortedCovidData = this.covidData.sort(function (a, b) {
                 let up_a = a.area.toUpperCase();
                 let up_b = b.area.toUpperCase();
@@ -747,6 +770,14 @@ let app = new Vue({
                 }
             }
 
+        },
+
+        showTops() {
+            this.selectedAreas = this.topAreas;
+        },
+
+        showBottoms() {
+            this.selectedAreas = this.bottomAreas;
         },
 
         selectAll() {
@@ -839,7 +870,13 @@ let app = new Vue({
         dataSourceMainUrl: searchObject['mode'] === "countries" ? 'https://github.com/CSSEGISandData/COVID-19' :
             'https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/',
 
-        dataSourceName: searchObject['mode'] === "countries" ? "Johns Hopkins University" : 'USAFacts'
+        dataSourceName: searchObject['mode'] === "countries" ? "Johns Hopkins University" : 'USAFacts',
+
+        topAreas: [],
+
+        bottomAreas: [],
+
+        edgeWindow: 10
 
     }
 
