@@ -135,10 +135,17 @@
           <button @click="selectAll">Select All</button>
         </div>
 
-        <div id="buttonwrapper-edge" class="buttonwrapper">
-          <a class="edge_ranges edge_right" @click="showTops">Top {{edgeWindow}}</a>
-          <a class="edge_ranges edge_left" @click="showBottoms">Bottom {{edgeWindow}}</a>
-        </div>
+        <!--usRegionNames-->
+        <select v-model="selectedRegion" @mousedown="pause">
+          <option v-for="s in regionNames" v-bind:value="s">
+            {{ s }}
+          </option>
+        </select>
+
+<!--        <div id="buttonwrapper-edge" class="buttonwrapper">-->
+<!--          <a class="edge_ranges edge_right" @click="showTops">Top {{edgeWindow}}</a>-->
+<!--          <a class="edge_ranges edge_left" @click="showBottoms">Bottom {{edgeWindow}}</a>-->
+<!--        </div>-->
 
         <ul style="padding-top: 0.5rem;">
           <li v-for="d in sortedCovidData">

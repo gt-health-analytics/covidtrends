@@ -116,6 +116,42 @@ const abbrev_us_state = {
     "WY": "Wyoming",
     "GU": "Guam"
 };
+const most = "Most Cases";
+const fewest = "Fewest Cases";
+const usRegions = {
+    "Most Cases": [],
+    "Fewest Cases": [],
+    "Northeast": ["Connecticut", "Maine", "Massachusetts", "New Hampshire", "Rhode Island", "Vermont", "New Jersey", "New York", "Pennsylvania"],
+    "New England": ["Connecticut", "Maine", "Massachusetts", "New Hampshire", "Rhode Island", "Vermont"],
+    "Middle Atlantic": ["New Jersey", "New York", "Pennsylvania"],
+    "Midwest": ["Indiana", "Illinois", "Michigan", "Ohio", "Wisconsin", "Iowa", "Kansas", "Minnesota", "Missouri", "Nebraska", "North Dakota", "South Dakota"],
+    "East North Central": ["Indiana", "Illinois", "Michigan", "Ohio", "Wisconsin"],
+    "West North Central": ["Iowa", "Kansas", "Minnesota", "Missouri", "Nebraska", "North Dakota", "South Dakota"],
+    "South": ["Delaware", "District of Columbia", "Florida", "Georgia", "Maryland", "North Carolina", "South Carolina", "West Virginia", "Alabama", "Kentucky", "Mississippi", "Tennessee", "Arkansas", "Louisiana", "Oklahoma", "Texas"],
+    "South Atlantic": ["Delaware", "District of Columbia", "Florida", "Georgia", "Maryland", "North Carolina", "South Carolina", "West Virginia"],
+    "East South Central": ["Alabama", "Kentucky", "Mississippi", "Tennessee"],
+    "West South Central": ["Arkansas", "Louisiana", "Oklahoma", "Texas"],
+    "West": ["Arizona", "Colorado", "Idaho", "New Mexico", "Montana", "Utah", "Nevada", "Wyoming", "Alaska", "California", "Hawaii", "Oregon", "Washington"],
+    "Mountain": ["Arizona", "Colorado", "Idaho", "New Mexico", "Montana", "Utah", "Nevada", "Wyoming"],
+    "Pacific": ["Alaska", "California", "Hawaii", "Oregon", "Washington"]
+};
+
+const worldRegions = {
+    "Most Cases": [],
+    "Fewest Cases": [],
+    "Africa": ['Algeria', 'Angolia', 'Benin', 'Botswana', 'Burkina', 'Burundi', 'Cameroon', 'Central African Republic', 'Chad', 'Chana', 'Comoros Island', 'Congo', 'Congo (Zaire)', 'Cote D\'Ivoire', 'Djibouti', 'Egypt', 'Equatorial Guinea', 'Eritrea', 'Ethiopia', 'Gabon', 'Guinea', 'Guinea Bissau', 'Kenya', 'Lesotho', 'Liberia', 'Libya', 'Madagascar', 'Malawi', 'Mali', 'Mauritania', 'Mauritius', 'Morocco', 'Mozambique', 'Namibia', 'Niger', 'Nigeria', 'Rwanda', 'Sao Tomi and Principe', 'Senegal', 'Seychelles', 'Sierra Leone', 'Somalia', 'Republic of South Africa', 'Sudan', 'Swaziland', 'Tanzania', 'Tunisia', 'Togo', 'Uganda', 'Zambia', 'Zimbabwe'],
+    "Antarctica": ['Mainland Antarctica', 'United Kingdom (Islands only)'],
+    "Asia": ['Afghanistan', 'Armenia', 'Azerbaijan', 'Bahrain', 'Bangladesh', 'Bhutan', 'Brunei', 'Cambodia', 'China', 'Cyprus', 'Georgia', 'Iran', 'Iraq', 'India', 'Indonesia', 'Israel and Gaza', 'Japan', 'Jordan', 'Kazakstan', 'Kuwait', 'Kyrgzstan', 'Laos', 'Lebanon', 'Malaysia', 'Mongolia', 'Myanmar (Burma)', 'Nepal', 'North Korea', 'Oman', 'Pakistan', 'Palau', 'Phillipines', 'Quatar', 'Russian Federation', 'Saudi Arabia', 'South Korea', 'Sri Lanka', 'Syria', 'Taiwan', 'Tajikstan', 'Thailand', 'Turkey', 'Turkmenistan', 'United Arab Emirates', 'Uzbekistan', 'Vietnam', 'Yemen'],
+    "Oceania": ['Australia', 'Fiji', 'France (Islands only)', 'Kiribati', 'Marshall Islands', 'Micronesia, F.S.O', 'Nauru', 'New Zealand', 'Papua New Guinea', 'Solomon Islands', 'Tonga', 'Tuvalu', 'United Kingdom (Islands only)', 'Vanuatu', 'Western Samoa'],
+    "Europe": ['Albania', 'Andorra', 'Austria', 'Belarus', 'Belgium', 'Bosnia-Herzegovina', 'Bulgaria', 'Cape Verde', 'Croatia', 'Czech Republic', 'Denmark and Greenland', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Iceland', 'Republic of Ireland', 'Italy', 'Latvia', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Malta', 'Moldova', 'Netherlands', 'Norway', 'Poland', 'Portugal', 'Romania', 'Russian Federation', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'Switzerland', 'Turkey', 'Ukraine', 'United Kingdom', 'Yugoslavia'],
+    "North America": ['Barbados', 'Bahamas', 'Belize', 'Canada', 'Costa Rica', 'Cuba', 'Dominica', 'Dominican Republic', 'El Salvador', 'France (Islands only)', 'Greenland (Denmark)', 'Grenada', 'Guatemala', 'Haiti', 'Honduras', 'Jamaica', 'Mexico', 'Netherlands (Islands only)', 'Pacific Islands Inc. Hawaii', 'Panama', 'St Kitts-Nevis', 'St Lucia', 'St Vincent and the Grenadines', 'Trinidad and Tobago', 'United Kingdom (Islands only)', 'US'],
+    "South America": ['Argentina', 'Bolivia', 'Brazil', 'Chile', 'Colombia', 'Ecuador', 'French Guiana', 'Guyana', 'Nicaragua', 'Paraguay', 'Peru', 'Suriname', 'United Kingdom (Islands only)', 'Uruguay', 'Venezuela']
+};
+
+const localRegions = {
+    "Most Cases": [],
+    "Fewest Cases": []
+};
 
 function parseURL() {
     const url = window.location;
@@ -528,6 +564,25 @@ let app = new Vue({
             this.pullData(this.selectedData);
         },
 
+        selectedRegion() {
+            if (this.selectedRegion === fewest) {
+                this.selectedAreas = this.bottomAreas;
+            } else if (this.selectedRegion === most) {
+                this.selectedAreas = this.topAreas;
+            } else {
+                let regions = usRegions;
+                if (this.viewMode === "countries") {
+                    regions = worldRegions;
+                } else if (this.viewMode === "counties") {
+                    regions = localRegions;
+                }
+                if (regions.hasOwnProperty(this.selectedRegion)) {
+                    this.selectedAreas = regions[this.selectedRegion];
+                }
+            }
+            this.pullData(this.selectedData);
+        },
+
         graphMounted() {
             //console.log('minDay', this.minDay);
             //console.log('autoPlay', this.autoplay);
@@ -544,6 +599,7 @@ let app = new Vue({
 
     methods: {
         showState(state) {
+            this.pause();
             console.log(state);
             let selectedState = state;
             if (us_state_abbrev.hasOwnProperty(state)) {
@@ -560,25 +616,31 @@ let app = new Vue({
             this.covidData = [];
             this.dataSourceMainUrl = 'https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/';
             this.dataSourceName = 'USAFacts';
+            this.regionNames = Object.keys(localRegions);
+            this.selectedRegion = most;
             this.pullData(this.selectedData);
         },
 
         showGlobal() {
+            this.pause();
             this.selectedSubArea = "GA";
             this.viewMode = 'countries';
             this.mainName = "Global";
             this.areaName = "Countries";
             this.usView = false;
             this.globalView = true;
-            this.lookupKey = "Country/Region" ;
+            this.lookupKey = "Country/Region";
             this.selectedAreas = [];
             this.covidData = [];
             this.dataSourceMainUrl = 'https://github.com/CSSEGISandData/COVID-19';
             this.dataSourceName = "Johns Hopkins University";
+            this.regionNames = Object.keys(worldRegions);
+            this.selectedRegion = most;
             this.pullData(this.selectedData);
         },
 
         showUS() {
+            this.pause();
             this.selectedSubArea = "GA";
             this.viewMode = 'states';
             this.mainName = "U.S.";
@@ -590,6 +652,8 @@ let app = new Vue({
             this.covidData = [];
             this.dataSourceMainUrl = 'https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/';
             this.dataSourceName = 'USAFacts';
+            this.regionNames = Object.keys(usRegions);
+            this.selectedRegion = most;
             this.pullData(this.selectedData);
 
 
@@ -622,7 +686,7 @@ let app = new Vue({
                     Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", this.processData);
             } else if (selectedData === 'Reported Deaths') {
                 if (this.viewMode === 'states' || this.viewMode === 'counties')
-                    //             https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv
+                //             https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv
                     Plotly.d3.csv('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv', this.processData);
                 else
                     Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", this.processData);
@@ -721,7 +785,9 @@ let app = new Vue({
                     e.area);
             }
 
-            this.selectedAreas = this.topAreas;
+            if (this.selectedRegion === most) {
+                this.selectedAreas = this.topAreas;
+            }
             this.sortedCovidData = this.covidData.sort(function (a, b) {
                 let up_a = a.area.toUpperCase();
                 let up_b = b.area.toUpperCase();
@@ -876,7 +942,11 @@ let app = new Vue({
 
         bottomAreas: [],
 
-        edgeWindow: 10
+        edgeWindow: 10,
+
+        selectedRegion: most,
+
+        regionNames: searchObject['mode'] === "states" ? Object.keys(usRegions) : searchObject['mode'] === "countries" ? Object.keys(worldRegions) : Object.keys(localRegions),
 
     }
 
