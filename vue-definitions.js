@@ -623,7 +623,7 @@ let app = new Vue({
             } else if (selectedData === 'Reported Deaths') {
                 if (this.viewMode === 'states' || this.viewMode === 'counties')
                     //             https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv
-                    Plotly.d3.csv('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv', this.processData());
+                    Plotly.d3.csv('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv', this.processData);
                 else
                     Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", this.processData);
 
