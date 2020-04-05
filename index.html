@@ -5,6 +5,7 @@
 
   <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
   <meta content="utf-8" http-equiv="encoding">
+  <script src="libraries/moment.js"></script>
   <script src="libraries/plotly.min.js"></script>
   <script src="libraries/vue.js"></script>
   <link rel="stylesheet" type="text/css" href="normalize.css">
@@ -56,7 +57,9 @@
         <h2 style="margin: 0">{{mainName}} COVID-19 Cases</h2>
 
       </div>
-      <graph v-if="covidData.length > 0" :data="filteredCovidData" :dates="dates" :day.sync="day" :selected-data="selectedData" :scale="selectedScale" :resize="isHidden" @graph-mounted="graphMounted = true"></graph>
+      <graph v-if="covidData.length > 0" :data="filteredCovidData" :dates="dates" :day.sync="day"
+             :selected-data="selectedData" :scale="selectedScale" :resize="isHidden" :time="selectedTime"
+             @graph-mounted="graphMounted = true"></graph>
 
       <div id="nav">
 
@@ -73,10 +76,15 @@
           <input v-if="dates.length > 7" type="range" :min="minDay > 0 ? minDay : dates.length" :max="dates.length" step="1" v-model="day" id="slider" @mousedown="pause"></input>
         </div>
 
-        <div class="navelement">
+        <div class="navelement selectors">
           <select v-model="selectedScale" @mousedown="pause">
             <option v-for="s in scale" v-bind:value="s">
               {{ s }}
+            </option>
+          </select>
+          <select v-model="selectedTime" @mousedown="pause">
+            <option v-for="t in time" v-bind:value="t">
+              {{ t }}
             </option>
           </select>
         </div>
@@ -88,9 +96,9 @@
         Created by <a href="https://aatishb.com/">Aatish Bhatia</a> with
         <a href="https://www.youtube.com/user/minutephysics">Minute Physics</a> &middot;
         Data provided by <a v-bind:href="dataSourceMainUrl">{{dataSourceName}}</a> &middot;
+        Modified for US Data by <a href="https://gtri.gatech.edu/laboratories/information-and-communications-laboratory">GTRI</a> .
         Shortcuts: +/- for daily changes, space to play/pause &middot;
         <a href="https://github.com/aatishb/covidtrends#credits">Credits & Source</a> &middot;
-        Modified for US Data by <a href="https://gtri.gatech.edu/">GTRI</a>
         (<a href="https://github.com/gt-health-analytics/covidtrends">Source</a>).
         <a href="https://www.cdc.gov/coronavirus/2019-ncov/prepare/prevention.html">Stay safe!</a>
       </div>
@@ -117,6 +125,12 @@
         <select v-model="selectedScale" @mousedown="pause">
           <option v-for="s in scale" v-bind:value="s">
             {{ s }}
+          </option>
+        </select>
+
+        <select v-model="selectedTime" @mousedown="pause">
+          <option v-for="t in time" v-bind:value="t">
+            {{ t }}
           </option>
         </select>
 
@@ -153,7 +167,7 @@
             <label>
               <span>{{d.area}}</span>
               <span  v-if="usView" @click="showState(d.area)" class="detail-link">({{d.display_total}})</span>
-              <span  v-if="!usView" @click="showState(d.area)" class="detail-info">({{d.display_total}})</span>
+              <span  v-if="!usView" class="detail-info">({{d.display_total}})</span>
             </label>
             <span v-if="usView" class="detail-link" @click="showState(d.area)"><i class="fas fa-external-link-alt"></i></span>
           </li>

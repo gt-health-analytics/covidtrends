@@ -127,8 +127,8 @@ const usRegions = {
     "Midwest": ["Indiana", "Illinois", "Michigan", "Ohio", "Wisconsin", "Iowa", "Kansas", "Minnesota", "Missouri", "Nebraska", "North Dakota", "South Dakota"],
     "East North Central": ["Indiana", "Illinois", "Michigan", "Ohio", "Wisconsin"],
     "West North Central": ["Iowa", "Kansas", "Minnesota", "Missouri", "Nebraska", "North Dakota", "South Dakota"],
-    "South": ["Delaware", "District of Columbia", "Florida", "Georgia", "Maryland", "North Carolina", "South Carolina", "West Virginia", "Alabama", "Kentucky", "Mississippi", "Tennessee", "Arkansas", "Louisiana", "Oklahoma", "Texas"],
-    "South Atlantic": ["Delaware", "District of Columbia", "Florida", "Georgia", "Maryland", "North Carolina", "South Carolina", "West Virginia"],
+    "South": ["Delaware", "District Of Columbia", "Florida", "Georgia", "Maryland", "North Carolina", "South Carolina", "West Virginia", "Alabama", "Kentucky", "Mississippi", "Tennessee", "Arkansas", "Louisiana", "Oklahoma", "Texas"],
+    "South Atlantic": ["Delaware", "District Of Columbia", "Florida", "Georgia", "Maryland", "North Carolina", "South Carolina", "West Virginia"],
     "East South Central": ["Alabama", "Kentucky", "Mississippi", "Tennessee"],
     "West South Central": ["Arkansas", "Louisiana", "Oklahoma", "Texas"],
     "West": ["Arizona", "Colorado", "Idaho", "New Mexico", "Montana", "Utah", "Nevada", "Wyoming", "Alaska", "California", "Hawaii", "Oregon", "Washington"],
@@ -140,18 +140,72 @@ const worldRegions = {
     "Most Cases": [],
     "Fewest Cases": [],
     "Africa": ['Algeria', 'Angolia', 'Benin', 'Botswana', 'Burkina', 'Burundi', 'Cameroon', 'Central African Republic', 'Chad', 'Chana', 'Comoros Island', 'Congo', 'Congo (Zaire)', 'Cote D\'Ivoire', 'Djibouti', 'Egypt', 'Equatorial Guinea', 'Eritrea', 'Ethiopia', 'Gabon', 'Guinea', 'Guinea Bissau', 'Kenya', 'Lesotho', 'Liberia', 'Libya', 'Madagascar', 'Malawi', 'Mali', 'Mauritania', 'Mauritius', 'Morocco', 'Mozambique', 'Namibia', 'Niger', 'Nigeria', 'Rwanda', 'Sao Tomi and Principe', 'Senegal', 'Seychelles', 'Sierra Leone', 'Somalia', 'Republic of South Africa', 'Sudan', 'Swaziland', 'Tanzania', 'Tunisia', 'Togo', 'Uganda', 'Zambia', 'Zimbabwe'],
+    "Eastern Africa": ["Burundi", "Comoros", "Djibouti", "Eritrea", "Ethiopia", "Kenya", "Madagascar", "Malawi", "Mauritius", "Mayotte", "Mozambique", "Reunion", "Rwanda", "Seychelles", "Somalia", "Tanzania, United Republic of", "Uganda", "Zambia", "Zimbabwe"],
+    "Middle Africa": ["Angola", "Cameroon", "Central African Republic", "Chad", "Congo (Brazzaville)", "Congo", "Congo, Democratic Republic of the", "Equatorial Guinea", "Gabon", "Sao Tome and Principe"],
+    "Northern Africa": ["Algeria", "Egypt", "Libyan", "Morroco", "South Sudan", "Sudan", "Tunisia", "Western Sahara"],
+    "Southern Africa": ["Botswana", "Eswatini", "Lesotho", "Namibia", "South Africa"],
+    "Western Africa": ["Benin", "Burkina Faso", "Cape Verde", "Cote d'Ivoire (Ivory Coast)", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Liberia", "Mali", "Mauritania", "Niger", "Nigeria", "Saint Helena", "Senegal", "Sierra Leone", "Togo"],
     "Antarctica": ['Mainland Antarctica', 'United Kingdom (Islands only)'],
     "Asia": ['Afghanistan', 'Armenia', 'Azerbaijan', 'Bahrain', 'Bangladesh', 'Bhutan', 'Brunei', 'Cambodia', 'China', 'Cyprus', 'Georgia', 'Iran', 'Iraq', 'India', 'Indonesia', 'Israel and Gaza', 'Japan', 'Jordan', 'Kazakstan', 'Kuwait', 'Kyrgzstan', 'Laos', 'Lebanon', 'Malaysia', 'Mongolia', 'Myanmar (Burma)', 'Nepal', 'North Korea', 'Oman', 'Pakistan', 'Palau', 'Phillipines', 'Quatar', 'Russian Federation', 'Saudi Arabia', 'South Korea', 'Sri Lanka', 'Syria', 'Taiwan', 'Tajikstan', 'Thailand', 'Turkey', 'Turkmenistan', 'United Arab Emirates', 'Uzbekistan', 'Vietnam', 'Yemen'],
-    "Oceania": ['Australia', 'Fiji', 'France (Islands only)', 'Kiribati', 'Marshall Islands', 'Micronesia, F.S.O', 'Nauru', 'New Zealand', 'Papua New Guinea', 'Solomon Islands', 'Tonga', 'Tuvalu', 'United Kingdom (Islands only)', 'Vanuatu', 'Western Samoa'],
-    "Europe": ['Albania', 'Andorra', 'Austria', 'Belarus', 'Belgium', 'Bosnia-Herzegovina', 'Bulgaria', 'Cape Verde', 'Croatia', 'Czech Republic', 'Denmark and Greenland', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Iceland', 'Republic of Ireland', 'Italy', 'Latvia', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Malta', 'Moldova', 'Netherlands', 'Norway', 'Poland', 'Portugal', 'Romania', 'Russian Federation', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'Switzerland', 'Turkey', 'Ukraine', 'United Kingdom', 'Yugoslavia'],
-    "North America": ['Barbados', 'Bahamas', 'Belize', 'Canada', 'Costa Rica', 'Cuba', 'Dominica', 'Dominican Republic', 'El Salvador', 'France (Islands only)', 'Greenland (Denmark)', 'Grenada', 'Guatemala', 'Haiti', 'Honduras', 'Jamaica', 'Mexico', 'Netherlands (Islands only)', 'Pacific Islands Inc. Hawaii', 'Panama', 'St Kitts-Nevis', 'St Lucia', 'St Vincent and the Grenadines', 'Trinidad and Tobago', 'United Kingdom (Islands only)', 'US'],
-    "South America": ['Argentina', 'Bolivia', 'Brazil', 'Chile', 'Colombia', 'Ecuador', 'French Guiana', 'Guyana', 'Nicaragua', 'Paraguay', 'Peru', 'Suriname', 'United Kingdom (Islands only)', 'Uruguay', 'Venezuela']
+    "Middle East": ["Bahrain", "Iraq", "Iran", "Israel", "Jordan", "Kuwait", "Lebanon", "Oman", "Palestine", "Qatar", "Saudi Arabia", "Syria", "United Arab Emirates", "Yemen"],
+    "Oceania": ["Australia", "Fiji", "French Polynesia", "Guam", "Kiribati", "Marshall Islands", "Micronesia", "New Caledonia", "New Zealand", "Papua New Guinea", "Samoa", "American Samoa", "Solomon Islands", "Tonga", "Vanuatu", 'Australia', 'Fiji', 'France (Islands only)', 'Kiribati', 'Marshall Islands', 'Micronesia, F.S.O', 'Nauru', 'New Zealand', 'Papua New Guinea', 'Solomon Islands', 'Tonga', 'Tuvalu', 'United Kingdom (Islands only)', 'Vanuatu', 'Western Samoa'],
+    "Europe": ['Albania', 'Andorra', 'Austria', 'Belarus', 'Belgium', 'Bosnia-Herzegovina', 'Bulgaria', 'Cape Verde', 'Croatia', 'Czech Republic', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Iceland', 'Republic of Ireland', 'Italy', 'Latvia', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Malta', 'Moldova', 'Netherlands', 'Norway', 'Poland', 'Portugal', 'Romania', 'Russian Federation', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'Switzerland', 'Turkey', 'Ukraine', 'United Kingdom', 'Yugoslavia'],
+    "North America": ['Barbados', 'Bahamas', 'Belize', "Bermuda", 'Canada', 'Costa Rica', 'Cuba', 'Dominica', 'Dominican Republic', 'El Salvador', 'France (Islands only)', 'Greenland', 'Grenada', 'Guatemala', 'Haiti', 'Honduras', 'Jamaica', 'Mexico', 'Netherlands Antilles', 'Pacific Islands Inc. Hawaii', 'Panama', 'Saint Pierre and Miquelon', 'St Kitts-Nevis', 'St Lucia', 'St Vincent and the Grenadines', 'Trinidad and Tobago', 'United Kingdom (Islands only)', 'US'],
+    "South America": ['Argentina', 'Bolivia', 'Brazil', 'Chile', 'Colombia', 'Ecuador', 'French Guiana', 'Guyana', 'Nicaragua', 'Paraguay', 'Peru', 'Suriname', 'United Kingdom (Islands only)', 'Uruguay', 'Venezuela'],
+    "Caribbean": ["Anguilla", "Antigua and Barbuda", "Aruba", "Bahamas", "Barbados", "Bonaire, Saint Eustatius and Saba", "British Virgin Islands", "Cayman Islands", "Cuba", "Curaçao", "Dominica", "Dominican Republic", "Grenada", "Guadeloupe", "Haiti", "Jamaica", "Martinique", "Monserrat", "Puerto Rico", "Saint-Barthélemy", "St. Kitts and Nevis", "Saint Lucia", "Saint Martin", "Saint Vincent and the Grenadines", "Sint Maarten", "Trinidad and Tobago", "Turks and Caicos Islands", "Virgin Islands"],
+    "Central America": ["Belize", "Costa Rica", "El Salvador", "Guatemala", "Honduras", "Mexico", "Nicaragua", "Panama"]
 };
 
 const localRegions = {
     "Most Cases": [],
     "Fewest Cases": []
 };
+
+// const firstUSCase = '1/22/20';
+// const firstGlobalCase = '12/1/19';
+const usWeek1 = '01/19/20';
+const globalWeek1 = '12/01/19';
+let usWeeks = {};
+let globalWeeks = {};
+let reverseUsWeeks = {};
+let reverseGlobalWeeks = {};
+let usWeekList = [];
+let globalWeekList = [];
+
+function mapWeeks(firstWeekday, weekMap, reverseMap, weeks) {
+    let stop = false;
+    let curDate = moment(firstWeekday, "MM/DD/YY");
+    let n = 0;
+    let weekCount = 1;
+    while (!stop) {
+        let formatted = curDate.format('M/D/YY');
+        let weekString = "Week " + weekCount;
+        weekMap[formatted] = weekString;
+        reverseMap[weekString] = formatted;
+        curDate = curDate.add(1, 'days');
+
+        n += 1;
+        if (n >= 7) {
+            weeks.push(weekString);
+            weekCount += 1;
+            n = 0;
+        }
+
+        let isCurrentDate = curDate.isSame(new Date(), "day");
+        if (isCurrentDate) {
+            if (!weeks.includes(weekString)) {
+                weeks.push(weekString);
+            }
+            stop = true;
+        }
+    }
+}
+
+mapWeeks(usWeek1, usWeeks, reverseUsWeeks, usWeekList);
+// mapWeeks(globalWeek1, globalWeeks, reverseGlobalWeeks, globalWeekList); TODO use this one
+mapWeeks(usWeek1, globalWeeks, reverseGlobalWeeks, globalWeekList);
+console.log(globalWeeks);
+console.log(usWeeks);
 
 function parseURL() {
     const url = window.location;
@@ -205,19 +259,14 @@ if (searchObject['mode'].toLowerCase() === 'us' || searchObject['mode'] === 'uni
     searchObject['mode'] = 'states';
 }
 if (!searchObject.hasOwnProperty('minCases')) {
-    if (searchObject['mode'] === 'states')
-        searchObject['minCases'] = 25;
-    if (searchObject['mode'] === 'countries')
-        searchObject['minCases'] = 50;
-    if (searchObject['mode'] === 'counties')
-        searchObject['minCases'] = 5;
+    searchObject['minCases'] = 5;
 }
 console.log(searchObject);
 
 
 Vue.component('graph', {
 
-    props: ['data', 'dates', 'day', 'selectedData', 'scale', 'resize', 'viewMode', 'selectedSubArea'],
+    props: ['data', 'dates', 'day', 'selectedData', 'scale', 'resize', 'viewMode', 'selectedSubArea', 'selectedTime'],
 
     template: '<div ref="graph" id="graph" style="height: 100%;"></div>',
 
@@ -291,7 +340,13 @@ Vue.component('graph', {
                     x: e.cases,
                     y: e.slope,
                     name: e.area,
-                    text: this.dates.map(f => e.area + '<br>' + f),
+                    text: this.dates.map(f => e.area + '<br>' + (reverseUsWeeks.hasOwnProperty(f)
+                            ? (f + ' (Ending ' + reverseUsWeeks[f] + ')')
+                            : (usWeeks.hasOwnProperty(f) ?
+                                    (f + " (" + usWeeks[f] + ")")
+                                    : f
+                            )
+                    )),
                     mode: showDailyMarkers ? 'lines+markers' : 'lines',
                     type: 'scatter',
                     legendgroup: i,
@@ -348,7 +403,9 @@ Vue.component('graph', {
             }
 
             this.layout = {
-                title: 'Trajectory of ' + this.selectedData + ' (' + this.dates[this.day - 1] + ')',
+                title: 'Trajectory of ' + this.selectedData + ' ('
+                    + (this.selectedTime === "Weekly" ? "Week " : "")
+                    + this.dates[this.day - 1] + ')',
                 showlegend: false,
                 xaxis: {
                     title: 'Total ' + this.selectedData,
@@ -547,9 +604,10 @@ let app = new Vue({
 
             if ((e.key === ' ') && this.dates.length > 0) {
                 this.play();
+
             } else if ((e.key === '-' || e.key === '_') && this.dates.length > 0) {
                 this.paused = true;
-                this.day = Math.max(this.day - 1, 8);
+                this.day = Math.max(this.day - 1, this.dates.length);
             } else if ((e.key === '+' || e.key === '=') && this.dates.length > 0) {
                 this.paused = true;
                 this.day = Math.min(this.day + 1, this.dates.length)
@@ -583,6 +641,13 @@ let app = new Vue({
             this.pullData(this.selectedData);
         },
 
+        selectedTime() {
+            this.pause();
+            this.day = 0;
+            this.pullData(this.selectedData, true);
+
+        },
+
         graphMounted() {
             //console.log('minDay', this.minDay);
             //console.log('autoPlay', this.autoplay);
@@ -613,12 +678,11 @@ let app = new Vue({
             this.globalView = false;
             this.lookupKey = "County Name";
             this.selectedAreas = [];
-            this.covidData = [];
             this.dataSourceMainUrl = 'https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/';
             this.dataSourceName = 'USAFacts';
             this.regionNames = Object.keys(localRegions);
             this.selectedRegion = most;
-            this.pullData(this.selectedData);
+            this.pullData(this.selectedData, true);
         },
 
         showGlobal() {
@@ -631,12 +695,12 @@ let app = new Vue({
             this.globalView = true;
             this.lookupKey = "Country/Region";
             this.selectedAreas = [];
-            this.covidData = [];
             this.dataSourceMainUrl = 'https://github.com/CSSEGISandData/COVID-19';
             this.dataSourceName = "Johns Hopkins University";
             this.regionNames = Object.keys(worldRegions);
             this.selectedRegion = most;
-            this.pullData(this.selectedData);
+            this.pullData(this.selectedData, true);
+            this.play();
         },
 
         showUS() {
@@ -649,13 +713,11 @@ let app = new Vue({
             this.globalView = false;
             this.lookupKey = "State";
             this.selectedAreas = [];
-            this.covidData = [];
             this.dataSourceMainUrl = 'https://usafacts.org/visualizations/coronavirus-covid-19-spread-map/';
             this.dataSourceName = 'USAFacts';
             this.regionNames = Object.keys(usRegions);
             this.selectedRegion = most;
-            this.pullData(this.selectedData);
-
+            this.pullData(this.selectedData, true);
 
         },
         myMax() { //https://stackoverflow.com/a/12957522
@@ -678,18 +740,30 @@ let app = new Vue({
             return Math.min.apply(Math, par);
         },
 
-        pullData(selectedData) {
+        pullData(selectedData, play) {
             if (selectedData === 'Confirmed Cases') {
                 if (this.viewMode === 'states' || this.viewMode === 'counties')
-                    Plotly.d3.csv('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv', this.processData);
+                    Plotly.d3.csv('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv', (data) => {
+                        this.processData(data);
+                        if (play) this.play();
+                    });
                 else
-                    Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", this.processData);
+                    Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", (data) => {
+                        this.processData(data);
+                        if (play) this.play();
+                    });
             } else if (selectedData === 'Reported Deaths') {
                 if (this.viewMode === 'states' || this.viewMode === 'counties')
                 //             https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv
-                    Plotly.d3.csv('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv', this.processData);
+                    Plotly.d3.csv('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv', (data) => {
+                        this.processData(data);
+                        if (play) this.play();
+                    });
                 else
-                    Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", this.processData);
+                    Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", (data) => {
+                        this.processData(data);
+                        if (play) this.play();
+                    });
 
             }
         },
@@ -720,7 +794,23 @@ let app = new Vue({
             };
 
             const offset = 4;
-            let dates = Object.keys(data[0]).slice(offset);
+            let dates;
+            let weekLookup = {};
+            let reverseWeekLookup = {};
+            if (this.selectedTime === "Daily") {
+                dates = Object.keys(data[0]).slice(offset);
+            } else {
+                if (this.viewMode === "countries") {
+                    dates = globalWeekList;
+                    weekLookup = globalWeeks;
+                    reverseWeekLookup = reverseGlobalWeeks;
+                } else {
+                    dates = usWeekList;
+                    weekLookup = usWeeks;
+                    reverseWeekLookup = reverseUsWeeks;
+                }
+            }
+
             this.dates = dates;
 
             //this.day = this.dates.length;
@@ -736,15 +826,28 @@ let app = new Vue({
                 let arr = [];
 
                 for (let date of dates) {
-                    let sum = areaData.map(e => parseInt(e[date]) || 0).reduce((a, b) => a + b);
-                    if (isNaN(sum)) {
-                        sum = 0;
+                    if (this.selectedTime === "Daily") {
+                        let sum = areaData.map(e => parseInt(e[date]) || 0).reduce((a, b) => a + b);
+                        if (isNaN(sum)) {
+                            sum = 0;
+                        }
+                        arr.push(sum);
+                    } else {
+                        let lastDayOfWeek = reverseWeekLookup[date];
+                        let sum = areaData.map(e => parseInt(e[lastDayOfWeek]) || 0).reduce((a, b) => a + b);
+                        if (isNaN(sum)) {
+                            sum = 0;
+                        }
+                        arr.push(sum);
                     }
-                    arr.push(sum);
                 }
 
                 if (!areasToLeaveOut.includes(area)) {
-                    let slope = arr.map((e, i, a) => e - a[i - 7]);
+                    let timeDiff = 7;
+                    if (this.selectedTime === "Weekly") {
+                        timeDiff = 1;
+                    }
+                    let slope = arr.map((e, i, a) => e - a[i - timeDiff]);
 
                     if (Object.keys(renameAreas).includes(area)) {
                         area = renameAreas[area];
@@ -793,7 +896,7 @@ let app = new Vue({
                 let up_b = b.area.toUpperCase();
                 return (up_a < up_b) ? -1 : (up_a > up_b) ? 1 : 0;
             });
-            this.areas = this.covidData.map(e => e.area).sort();
+            this.areas = this.covidData.map(e => e.area).sort()
 
         },
 
@@ -891,13 +994,17 @@ let app = new Vue({
 
         sliderSelected: false,
 
-        day: 7,
+        day: 1,
 
         icon: 'icons/play.svg',
 
         scale: ['Logarithmic Scale', 'Linear Scale'],
 
         selectedScale: 'Logarithmic Scale',
+
+        time: ['Daily', 'Weekly'],
+
+        selectedTime: 'Weekly',
 
         selectedSubArea: searchObject['state'],
 
