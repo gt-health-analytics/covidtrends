@@ -23,7 +23,7 @@
   <div id="header">
 
     <div id="explainer">
-      <p>This interactive visualization charts the <b><i>new</i></b> {{selectedData.toLowerCase()}} of COVID-19 in the past week vs. the <b><i>total</i></b> {{selectedData.toLowerCase()}} to date. When plotted in this way, exponential growth is represented as a straight line that slopes upwards.
+      <p>This interactive visualization charts the <b><i>new</i></b> {{selectedData.toLowerCase()}} of COVID-19 vs. the <b><i>cumulative</i></b> {{selectedData.toLowerCase()}} to date. When plotted in this way, exponential growth is represented as a straight line that slopes upwards.
  <i>We're all in this together.</i> <span v-if="isHidden"><a @click="toggleHide">Learn more.</a></span></p>
 
       <span v-if="!isHidden">
