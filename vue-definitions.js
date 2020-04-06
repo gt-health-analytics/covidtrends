@@ -202,8 +202,7 @@ function mapWeeks(firstWeekday, weekMap, reverseMap, weeks, dateFormat) {
 }
 
 mapWeeks(usWeek1, usWeeks, reverseUsWeeks, usWeekList, 'M/D/YYYY');
-// mapWeeks(globalWeek1, globalWeeks, reverseGlobalWeeks, globalWeekList); TODO use this one
-mapWeeks(usWeek1, globalWeeks, reverseGlobalWeeks, globalWeekList, 'M/D/YY');
+mapWeeks(globalWeek1, globalWeeks, reverseGlobalWeeks, globalWeekList, 'M/D/YY');
 console.log(globalWeeks);
 console.log(usWeeks);
 
