@@ -172,13 +172,13 @@ let reverseGlobalWeeks = {};
 let usWeekList = [];
 let globalWeekList = [];
 
-function mapWeeks(firstWeekday, weekMap, reverseMap, weeks) {
+function mapWeeks(firstWeekday, weekMap, reverseMap, weeks, dateFormat) {
     let stop = false;
     let curDate = moment(firstWeekday, "MM/DD/YY");
     let n = 0;
     let weekCount = 1;
     while (!stop) {
-        let formatted = curDate.format('M/D/YY');
+        let formatted = curDate.format(dateFormat);
         let weekString = "Week " + weekCount;
         weekMap[formatted] = weekString;
         reverseMap[weekString] = formatted;
@@ -201,9 +201,9 @@ function mapWeeks(firstWeekday, weekMap, reverseMap, weeks) {
     }
 }
 
-mapWeeks(usWeek1, usWeeks, reverseUsWeeks, usWeekList);
+mapWeeks(usWeek1, usWeeks, reverseUsWeeks, usWeekList, 'M/D/YYYY');
 // mapWeeks(globalWeek1, globalWeeks, reverseGlobalWeeks, globalWeekList); TODO use this one
-mapWeeks(usWeek1, globalWeeks, reverseGlobalWeeks, globalWeekList);
+mapWeeks(usWeek1, globalWeeks, reverseGlobalWeeks, globalWeekList, 'M/D/YY');
 console.log(globalWeeks);
 console.log(usWeeks);
 
@@ -259,7 +259,7 @@ if (searchObject['mode'].toLowerCase() === 'us' || searchObject['mode'] === 'uni
     searchObject['mode'] = 'states';
 }
 if (!searchObject.hasOwnProperty('minCases')) {
-    searchObject['minCases'] = 5;
+    searchObject['minCases'] = 10;
 }
 console.log(searchObject);
 
@@ -643,7 +643,7 @@ let app = new Vue({
 
         selectedTime() {
             this.pause();
-            this.day = 0;
+            this.day = this.minDay;
             this.pullData(this.selectedData, true);
 
         },
@@ -682,6 +682,7 @@ let app = new Vue({
             this.dataSourceName = 'USAFacts';
             this.regionNames = Object.keys(localRegions);
             this.selectedRegion = most;
+            this.covidData = [];
             this.pullData(this.selectedData, true);
         },
 
@@ -699,8 +700,8 @@ let app = new Vue({
             this.dataSourceName = "Johns Hopkins University";
             this.regionNames = Object.keys(worldRegions);
             this.selectedRegion = most;
+            this.covidData = [];
             this.pullData(this.selectedData, true);
-            this.play();
         },
 
         showUS() {
@@ -745,24 +746,36 @@ let app = new Vue({
                 if (this.viewMode === 'states' || this.viewMode === 'counties')
                     Plotly.d3.csv('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv', (data) => {
                         this.processData(data);
-                        if (play) this.play();
+                        if (play) {
+                            this.day = this.minDay;
+                            this.play();
+                        }
                     });
                 else
                     Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv", (data) => {
                         this.processData(data);
-                        if (play) this.play();
+                        if (play) {
+                            this.day = this.minDay;
+                            this.play();
+                        }
                     });
             } else if (selectedData === 'Reported Deaths') {
                 if (this.viewMode === 'states' || this.viewMode === 'counties')
                 //             https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv
                     Plotly.d3.csv('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_deaths_usafacts.csv', (data) => {
                         this.processData(data);
-                        if (play) this.play();
+                        if (play) {
+                            this.day = this.minDay;
+                            this.play();
+                        }
                     });
                 else
                     Plotly.d3.csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv", (data) => {
                         this.processData(data);
-                        if (play) this.play();
+                        if (play) {
+                            this.day = this.minDay;
+                            this.play();
+                        }
                     });
 
             }
