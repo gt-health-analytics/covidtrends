@@ -358,7 +358,7 @@ Vue.component('graph', {
                     },
                     hoverinfo: 'x+y+text',
                     hovertemplate: '%{text}<br>Total ' + this.selectedData + ': %{x:,}' +
-                        '<br>Weekly ' + this.selectedData + ': %{y:,}' +
+                        '<br>New ' + this.selectedData + ': %{y:,}' +
                         '<extra></extra>',
                 })
             );
@@ -376,7 +376,7 @@ Vue.component('graph', {
                         color: 'rgb(230,74,25)'
                     },
                     hovertemplate: '%{data.text}<br>Total ' + this.selectedData + ': %{x:,}' +
-                        '<br>Weekly ' + this.selectedData + ': %{y:,}' +
+                        '<br>New '  + this.selectedData + ': %{y:,}' +
                         '<br>' +
                         '<extra></extra>',
 
@@ -416,7 +416,7 @@ Vue.component('graph', {
                     },
                 },
                 yaxis: {
-                    title: 'New ' + this.selectedData + ' (in the Past Week)',
+                    title: '# of ' + this.selectedData,
                     type: this.scale === 'Logarithmic Scale' ? 'log' : 'linear',
                     range: this.yrange,
                     titlefont: {
@@ -741,7 +741,8 @@ let app = new Vue({
         },
 
         pullData(selectedData, play) {
-            if (selectedData === 'Confirmed Cases') {
+            if (selectedData === '' +
+                'Confirmed Cases') {
                 if (this.viewMode === 'states' || this.viewMode === 'counties')
                     Plotly.d3.csv('https://usafactsstatic.blob.core.windows.net/public/data/covid-19/covid_confirmed_usafacts.csv', (data) => {
                         this.processData(data);
@@ -855,10 +856,11 @@ let app = new Vue({
                 }
 
                 if (!areasToLeaveOut.includes(area)) {
-                    let timeDiff = 7;
-                    if (this.selectedTime === "Weekly") {
-                        timeDiff = 1;
-                    }
+                    // let timeDiff = 7;
+                    // if (this.selectedTime === "Weekly") {
+                    //     timeDiff = 1;
+                    // }
+                    let timeDiff = 1;
                     let slope = arr.map((e, i, a) => e - a[i - timeDiff]);
 
                     if (Object.keys(renameAreas).includes(area)) {
