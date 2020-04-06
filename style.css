@@ -20,7 +20,7 @@ h1 {
   /*
   text-align:center;*/
   font-weight:100;
-  font-size:2rem;
+  font-size:1.5rem;
 }
 
 h2 {
@@ -99,7 +99,7 @@ a, button {
   background-image: linear-gradient(to bottom, #590f0f, #b71c1c); /*#512b58*/
   position: relative;
   display: flex;
-  padding: 0.75rem;
+  padding: 0.5rem;
   flex-shrink: 0
 }
 
@@ -140,7 +140,7 @@ a, button {
   flex: 6;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 #right-column {
@@ -150,12 +150,14 @@ a, button {
   flex-direction: column;
 
   background-color: #fcf8e8;
-  padding: 1rem;
-  min-width: 15rem;
-
+  padding: 0.8rem;
+  min-width: 10rem;
+  font-size: 0.8rem;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
+
+
 
 #right-column > div {
   margin-bottom: 2rem;
@@ -172,7 +174,7 @@ a, button {
 }
 
 #right-column h2 {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   text-align: center;
   margin-bottom: 0.2rem;
 }
@@ -187,7 +189,7 @@ a, button {
 }
 
 .navelement {
-  padding: 1rem;
+  padding: 0.5rem;
   text-align: center;
   margin: auto;
 }
@@ -195,6 +197,7 @@ a, button {
 .navelement > h2 {
   margin-bottom: 0;
   margin: auto;
+  font-size: 1.25rem;
 }
 
 #slidercontainer {
@@ -315,5 +318,4 @@ select:first-child {
 }
 
 .disclaimer-container {
-  margin-bottom: 0.5rem;
 }

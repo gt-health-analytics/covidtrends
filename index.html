@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Covid Trends</title>
+  <title>COVID-19 Trends</title>
 
   <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
   <meta content="utf-8" http-equiv="encoding">
@@ -43,7 +43,7 @@
 
     <div id="logowrapper">
 
-      <h1>Covid Trends</h1>
+      <h1>COVID-19 Trends</h1>
 
     </div>
 
@@ -54,7 +54,7 @@
 
     <div id="left-column">
       <div align="center">
-        <h2 style="margin: 0">{{mainName}} COVID-19 Cases</h2>
+        <h3 style="margin: 0">{{mainName}} COVID-19 Cases</h3>
 
       </div>
       <graph v-if="covidData.length > 0" :data="filteredCovidData" :dates="dates" :day.sync="day"
@@ -66,8 +66,8 @@
       <div id="nav">
 
         <div class="navelement">
-          <img v-if="paused" @click="play" src="icons/play.svg" style="width: 3rem;">
-          <img v-if="!paused" @click="play" src="icons/pause.svg" style="width: 3rem;">
+          <img v-if="paused" @click="play" src="icons/play.svg" style="width: 2rem;">
+          <img v-if="!paused" @click="play" src="icons/pause.svg" style="width: 2rem;">
         </div>
 
         <div class="navelement">

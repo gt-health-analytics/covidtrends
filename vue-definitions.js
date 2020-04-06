@@ -149,7 +149,7 @@ const worldRegions = {
     "Asia": ['Afghanistan', 'Armenia', 'Azerbaijan', 'Bahrain', 'Bangladesh', 'Bhutan', 'Brunei', 'Cambodia', 'China', 'Cyprus', 'Georgia', 'Iran', 'Iraq', 'India', 'Indonesia', 'Israel and Gaza', 'Japan', 'Jordan', 'Kazakstan', 'Kuwait', 'Kyrgzstan', 'Laos', 'Lebanon', 'Malaysia', 'Mongolia', 'Myanmar (Burma)', 'Nepal', 'North Korea', 'Oman', 'Pakistan', 'Palau', 'Phillipines', 'Quatar', 'Russian Federation', 'Saudi Arabia', 'South Korea', 'Sri Lanka', 'Syria', 'Taiwan', 'Tajikstan', 'Thailand', 'Turkey', 'Turkmenistan', 'United Arab Emirates', 'Uzbekistan', 'Vietnam', 'Yemen'],
     "Middle East": ["Bahrain", "Iraq", "Iran", "Israel", "Jordan", "Kuwait", "Lebanon", "Oman", "Palestine", "Qatar", "Saudi Arabia", "Syria", "United Arab Emirates", "Yemen"],
     "Oceania": ["Australia", "Fiji", "French Polynesia", "Guam", "Kiribati", "Marshall Islands", "Micronesia", "New Caledonia", "New Zealand", "Papua New Guinea", "Samoa", "American Samoa", "Solomon Islands", "Tonga", "Vanuatu", 'Australia', 'Fiji', 'France (Islands only)', 'Kiribati', 'Marshall Islands', 'Micronesia, F.S.O', 'Nauru', 'New Zealand', 'Papua New Guinea', 'Solomon Islands', 'Tonga', 'Tuvalu', 'United Kingdom (Islands only)', 'Vanuatu', 'Western Samoa'],
-    "Europe": ['Albania', 'Andorra', 'Austria', 'Belarus', 'Belgium', 'Bosnia-Herzegovina', 'Bulgaria', 'Cape Verde', 'Croatia', 'Czech Republic', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Iceland', 'Republic of Ireland', 'Italy', 'Latvia', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Malta', 'Moldova', 'Netherlands', 'Norway', 'Poland', 'Portugal', 'Romania', 'Russian Federation', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'Switzerland', 'Turkey', 'Ukraine', 'United Kingdom', 'Yugoslavia'],
+    "Europe": ['Albania', 'Andorra', 'Austria', 'Belarus', 'Belgium', 'Bosnia-Herzegovina', 'Bulgaria', 'Cape Verde', 'Croatia', 'Czech Republic', 'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Iceland', 'Republic of Ireland', 'Italy', 'Latvia', 'Liechtenstein', 'Lithuania', 'Luxembourg', 'Macedonia', 'Malta', 'Moldova', 'Netherlands', 'Norway', 'Poland', 'Portugal', 'Romania', 'Russian Federation', 'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'Switzerland', 'Turkey', 'Ukraine', 'United Kingdom', 'Yugoslavia', 'Bosnia and Herzegovina'],
     "North America": ['Barbados', 'Bahamas', 'Belize', "Bermuda", 'Canada', 'Costa Rica', 'Cuba', 'Dominica', 'Dominican Republic', 'El Salvador', 'France (Islands only)', 'Greenland', 'Grenada', 'Guatemala', 'Haiti', 'Honduras', 'Jamaica', 'Mexico', 'Netherlands Antilles', 'Pacific Islands Inc. Hawaii', 'Panama', 'Saint Pierre and Miquelon', 'St Kitts-Nevis', 'St Lucia', 'St Vincent and the Grenadines', 'Trinidad and Tobago', 'United Kingdom (Islands only)', 'US'],
     "South America": ['Argentina', 'Bolivia', 'Brazil', 'Chile', 'Colombia', 'Ecuador', 'French Guiana', 'Guyana', 'Nicaragua', 'Paraguay', 'Peru', 'Suriname', 'United Kingdom (Islands only)', 'Uruguay', 'Venezuela'],
     "Caribbean": ["Anguilla", "Antigua and Barbuda", "Aruba", "Bahamas", "Barbados", "Bonaire, Saint Eustatius and Saba", "British Virgin Islands", "Cayman Islands", "Cuba", "Curaçao", "Dominica", "Dominican Republic", "Grenada", "Guadeloupe", "Haiti", "Jamaica", "Martinique", "Monserrat", "Puerto Rico", "Saint-Barthélemy", "St. Kitts and Nevis", "Saint Lucia", "Saint Martin", "Saint Vincent and the Grenadines", "Sint Maarten", "Trinidad and Tobago", "Turks and Caicos Islands", "Virgin Islands"],
@@ -271,7 +271,7 @@ console.log(searchObject);
 
 Vue.component('graph', {
 
-    props: ['data', 'dates', 'day', 'selectedData', 'scale', 'resize', 'viewMode', 'selectedSubArea', 'selectedTime'],
+    props: ['data', 'dates', 'day', 'selectedData', 'scale', 'resize', 'viewMode', 'selectedSubArea', 'selectedTime', 'mainName'],
 
     template: '<div ref="graph" id="graph" style="height: 100%;"></div>',
 
@@ -417,7 +417,7 @@ Vue.component('graph', {
                     type: this.scale === 'Logarithmic Scale' ? 'log' : 'linear',
                     range: this.xrange,
                     titlefont: {
-                        size: 24,
+                        size: 20,
                         color: 'rgb(230,74,25)'
                     },
                 },
@@ -426,7 +426,7 @@ Vue.component('graph', {
                     type: this.scale === 'Logarithmic Scale' ? 'log' : 'linear',
                     range: this.yrange,
                     titlefont: {
-                        size: 24,
+                        size: 20,
                         color: 'rgb(230,74,25)'
                     },
                 },
@@ -434,7 +434,7 @@ Vue.component('graph', {
                 font: {
                     family: 'Open Sans',
                     color: "black",
-                    size: 14
+                    size: 12
                 },
             };
 
@@ -550,7 +550,7 @@ Vue.component('graph', {
                 responsive: true,
                 toImageButtonOptions: {
                     format: 'png', // one of png, svg, jpeg, webp
-                    filename: 'Covid Trends',
+                    filename: 'COVID-19 Trends',
                     height: 800,
                     width: 1200,
                     scale: 1 // Multiply title/legend/axis/canvas sizes by this factor
