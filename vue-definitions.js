@@ -177,9 +177,14 @@ function mapWeeks(firstWeekday, weekMap, reverseMap, weeks, dateFormat) {
     let curDate = moment(firstWeekday, "MM/DD/YY");
     let n = 0;
     let weekCount = 1;
+    let firstDay = '';
     while (!stop) {
+
         let formatted = curDate.format(dateFormat);
-        let weekString = "Week " + weekCount;
+        if (n === 0) {
+            firstDay = formatted;
+        }
+        let weekString = "Week " + weekCount + ' - starting ' +  firstDay;
         weekMap[formatted] = weekString;
         reverseMap[weekString] = formatted;
         curDate = curDate.add(1, 'days');
@@ -341,7 +346,7 @@ Vue.component('graph', {
                     y: e.slope,
                     name: e.area,
                     text: this.dates.map(f => e.area + '<br>' + (reverseUsWeeks.hasOwnProperty(f)
-                            ? (f + ' (Ending ' + reverseUsWeeks[f] + ')')
+                            ? (f)
                             : (usWeeks.hasOwnProperty(f) ?
                                     (f + " (" + usWeeks[f] + ")")
                                     : f
