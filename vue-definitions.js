@@ -950,7 +950,7 @@ let app = new Vue({
             } else if (this.day < this.dates.length) {
                 if (!this.paused) {
                     this.day++;
-                    setTimeout(this.increment, 200);
+                    setTimeout(this.increment, 500);
                 }
             }
 

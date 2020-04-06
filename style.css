@@ -308,3 +308,12 @@ select:first-child {
   color: dimgray;
   font-size: 80%;
 }
+
+.disclaimer {
+  color: gray;
+  font-size: 0.8rem;
+}
+
+.disclaimer-container {
+  margin-bottom: 0.5rem;
+}

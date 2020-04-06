@@ -61,6 +61,8 @@
              :selected-data="selectedData" :scale="selectedScale" :resize="isHidden" :time="selectedTime"
              @graph-mounted="graphMounted = true"></graph>
 
+
+
       <div id="nav">
 
         <div class="navelement">
@@ -89,6 +91,17 @@
           </select>
         </div>
 
+
+
+      </div>
+
+      <div v-if="selectedTime === 'Weekly'" align="center" class="disclaimer-container">
+        <small class="disclaimer">* Most recent partial week removed due to incomplete data.</small>
+        <br />
+      </div>
+      <div v-if="selectedTime !== 'Weekly'" align="center" class="disclaimer-container">
+        <small class="disclaimer">&nbsp;</small>
+        <br />
       </div>
 
 
