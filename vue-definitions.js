@@ -193,9 +193,10 @@ function mapWeeks(firstWeekday, weekMap, reverseMap, weeks, dateFormat) {
 
         let isCurrentDate = curDate.isSame(new Date(), "day");
         if (isCurrentDate) {
-            if (!weeks.includes(weekString)) {
-                weeks.push(weekString);
-            }
+            // uncomment this out for partial week
+            // if (!weeks.includes(weekString)) {
+            //     weeks.push(weekString);
+            // }
             stop = true;
         }
     }
@@ -407,7 +408,7 @@ Vue.component('graph', {
                     + this.dates[this.day - 1] + ')',
                 showlegend: false,
                 xaxis: {
-                    title: 'Total ' + this.selectedData,
+                    title: ('# of Cumulative COVID-19 ' + this.selectedData.trim()).replace('Confirmed', '').replace(' ', ''),
                     type: this.scale === 'Logarithmic Scale' ? 'log' : 'linear',
                     range: this.xrange,
                     titlefont: {
@@ -416,7 +417,7 @@ Vue.component('graph', {
                     },
                 },
                 yaxis: {
-                    title: '# of ' + this.selectedData,
+                    title: ('# of Newly Reported COVID-19 ' + this.selectedData.trim()).replace('Confirmed', ''),
                     type: this.scale === 'Logarithmic Scale' ? 'log' : 'linear',
                     range: this.yrange,
                     titlefont: {
