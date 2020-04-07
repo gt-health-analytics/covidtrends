@@ -171,6 +171,7 @@ let reverseUsWeeks = {};
 let reverseGlobalWeeks = {};
 let usWeekList = [];
 let globalWeekList = [];
+const dateFormats = ['MM/DD/YY', 'MM/DD/YYYY', 'M/D/YY', 'M/D/YYYY', 'YYYY-MM-DD'];
 
 function mapWeeks(firstWeekday, weekMap, reverseMap, weeks, dateFormat) {
     let stop = false;
@@ -186,7 +187,11 @@ function mapWeeks(firstWeekday, weekMap, reverseMap, weeks, dateFormat) {
         }
         let weekString = "Week " + weekCount + ' - starting ' +  firstDay;
         weekMap[formatted] = weekString;
-        reverseMap[weekString] = formatted;
+        let formattedDates = [];
+        for (let fd of dateFormats) {
+            formattedDates.push(curDate.format(fd));
+        }
+        reverseMap[weekString] = formattedDates;
         curDate = curDate.add(1, 'days');
 
         n += 1;
@@ -791,6 +796,18 @@ let app = new Vue({
             return [...new Set(array)];
         },
 
+        findDate(formattedDates, dataObj) {
+            let sum = 0;
+            for (let i in formattedDates) {
+                let date = formattedDates[i];
+                if (dataObj.hasOwnProperty(date)) {
+                    sum = parseInt(dataObj[date], 10);
+                    break;
+                }
+            }
+            return sum;
+        },
+
         processData(data) {
             if (data === undefined) {
                 print('bad data');
@@ -852,8 +869,8 @@ let app = new Vue({
                         }
                         arr.push(sum);
                     } else {
-                        let lastDayOfWeek = reverseWeekLookup[date];
-                        let sum = areaData.map(e => parseInt(e[lastDayOfWeek]) || 0).reduce((a, b) => a + b);
+                        let lastDaysOfWeek = reverseWeekLookup[date];
+                        let sum = areaData.map(e => this.findDate(lastDaysOfWeek, e) || 0).reduce((a, b) => a + b);
                         if (isNaN(sum)) {
                             sum = 0;
                         }
