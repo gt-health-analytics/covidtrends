@@ -387,7 +387,7 @@ Vue.component('graph', {
             let traces2 = this.data.map((e, i) => ({
                     x: [e.cases[e.cases.length - 1]],
                     y: [e.slope[e.slope.length - 1]],
-                    current: [e.latestCounts[0]],
+                    current: [e.latestCounts[e.latestCounts.length - 1]],
                     text: e.area,
                     name: e.area,
                     mode: 'markers+text',
@@ -934,9 +934,8 @@ let app = new Vue({
                         cases: counts,
                         slope: slope.map((e, i) => arr[i] >= this.minCasesInArea ? e : NaN),
                         total: total,
-                        latestSlope: latestSlope,
-                        latestCounts: latestCounts,
-                        latestTotal: latestTotal,
+                        latestCounts: (this.selectedTime === "Weekly" ? latestCounts : counts),
+                        latestTotal: (this.selectedTime === "Weekly" ? latestTotal: total),
                         display_total: total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     });
 
