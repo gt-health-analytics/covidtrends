@@ -175,7 +175,7 @@ const dateFormats = ['MM/DD/YY', 'MM/DD/YYYY', 'M/D/YY', 'M/D/YYYY', 'YYYY-MM-DD
 let lastUsWeek;
 let lastGlobalWeek;
 
-function mapWeeks(firstWeekday, weekMap, reverseMap, weeks, dateFormat, lastWeek) {
+function mapWeeks(us, firstWeekday, weekMap, reverseMap, weeks, dateFormat) {
     let stop = false;
     let curDate = moment(firstWeekday, "MM/DD/YY");
     let n = 0;
@@ -205,7 +205,11 @@ function mapWeeks(firstWeekday, weekMap, reverseMap, weeks, dateFormat, lastWeek
 
         let isCurrentDate = curDate.isSame(new Date(), "day");
         if (isCurrentDate) {
-            lastWeek = weekString;
+            if (us) {
+                lastUsWeek = weekString;
+            } else {
+                lastGlobalWeek = weekString;
+            }
             // uncomment this out for partial week
             // if (!weeks.includes(weekString)) {
             //     weeks.push(weekString);
@@ -215,8 +219,8 @@ function mapWeeks(firstWeekday, weekMap, reverseMap, weeks, dateFormat, lastWeek
     }
 }
 
-mapWeeks(usWeek1, usWeeks, reverseUsWeeks, usWeekList, 'M/D/YY', lastUsWeek);
-mapWeeks(globalWeek1, globalWeeks, reverseGlobalWeeks, globalWeekList, 'M/D/YY', lastGlobalWeek);
+mapWeeks(true, usWeek1, usWeeks, reverseUsWeeks, usWeekList, 'M/D/YY');
+mapWeeks(false, globalWeek1, globalWeeks, reverseGlobalWeeks, globalWeekList, 'M/D/YY');
 console.log(usWeek1);
 console.log(usWeeks);
 console.log(reverseUsWeeks);
@@ -355,6 +359,7 @@ Vue.component('graph', {
                     x: e.cases,
                     y: e.slope,
                     name: e.area,
+                    current: e.latestTotal,
                     text: this.dates.map(f => e.area + '<br>' + (reverseUsWeeks.hasOwnProperty(f)
                             ? (f)
                             : (usWeeks.hasOwnProperty(f) ?
@@ -373,8 +378,8 @@ Vue.component('graph', {
                         color: 'rgba(0,0,0,0.15)'
                     },
                     hoverinfo: 'x+y+text',
-                    hovertemplate: '%{text}<br>Total ' + this.selectedData + ': %{x:,}' +
-                        '<br>New ' + this.selectedData + ': %{y:,}' +
+                    hovertemplate:'%{text}<br><br>New  '+ this.selectedData + ': %{y:,}' +
+                        '<br>Previous ' + this.selectedData + ': %{x:,}' +
                         '<extra></extra>',
                 })
             );
@@ -382,6 +387,7 @@ Vue.component('graph', {
             let traces2 = this.data.map((e, i) => ({
                     x: [e.cases[e.cases.length - 1]],
                     y: [e.slope[e.slope.length - 1]],
+                    current: [e.latestCounts[0]],
                     text: e.area,
                     name: e.area,
                     mode: 'markers+text',
@@ -391,8 +397,9 @@ Vue.component('graph', {
                         size: 8,
                         color: 'rgb(230,74,25)'
                     },
-                    hovertemplate: '%{data.text}<br>Total ' + this.selectedData + ': %{x:,}' +
-                        '<br>New '  + this.selectedData + ': %{y:,}' +
+                    hovertemplate: '%{data.text}<br><br>New ' + this.selectedData + ': <b>%{y:,}</b>' +
+                        '<br>Previous ' + this.selectedData + ': <b>%{x:,}</b>' +
+                        '<br><br>Current '  + this.selectedData + ': <b>%{data.current:,}</b>' +
                         '<br>' +
                         '<extra></extra>',
 
@@ -698,6 +705,7 @@ let app = new Vue({
             this.regionNames = Object.keys(localRegions);
             this.selectedRegion = most;
             this.covidData = [];
+            this.covidLatestData = [];
             this.pullData(this.selectedData, true);
         },
 
@@ -715,7 +723,8 @@ let app = new Vue({
             this.dataSourceName = "Johns Hopkins University";
             this.regionNames = Object.keys(worldRegions);
             this.selectedRegion = most;
-            this.covidData = [];
+            this.covidData = []
+            this.covidLatestData = [];
             this.pullData(this.selectedData, true);
         },
 
@@ -838,6 +847,7 @@ let app = new Vue({
             let dates;
             let weekLookup = {};
             let reverseWeekLookup = {};
+            let lastWeek;
             if (this.selectedTime === "Daily") {
                 dates = Object.keys(data[0]).slice(offset);
             } else {
@@ -845,18 +855,21 @@ let app = new Vue({
                     dates = globalWeekList;
                     weekLookup = globalWeeks;
                     reverseWeekLookup = reverseGlobalWeeks;
+                    lastWeek = reverseWeekLookup[lastGlobalWeek];
                 } else {
                     dates = usWeekList;
                     weekLookup = usWeeks;
                     reverseWeekLookup = reverseUsWeeks;
+                    lastWeek = reverseWeekLookup[lastUsWeek]
                 }
             }
+            console.log(lastWeek);
 
             this.dates = dates;
 
             //this.day = this.dates.length;
-
             let myData = [];
+            let myLastData = [];
             for (let area of areas) {
                 let areaData;
                 if (this.viewMode === 'counties') {
@@ -865,6 +878,7 @@ let app = new Vue({
                     areaData = data.filter(e => e[this.lookupKey] === area);
                 }
                 let arr = [];
+                let lastArr = [];
 
                 for (let date of dates) {
                     if (this.selectedTime === "Daily") {
@@ -882,6 +896,12 @@ let app = new Vue({
                         arr.push(sum);
                     }
                 }
+
+                let sum = areaData.map(e => this.findDate(lastWeek, e) || 0).reduce((a, b) => a + b);
+                if (isNaN(sum)) {
+                    sum = 0;
+                }
+                lastArr.push(sum);
 
                 if (!areasToLeaveOut.includes(area)) {
                     // let timeDiff = 7;
@@ -905,18 +925,36 @@ let app = new Vue({
                         }
                     }
 
+                    let latestSlope = lastArr.map((e, i, a) => e - a[i - timeDiff]);
+                    let latestCounts = lastArr.map(e => e >= this.minCasesInArea ? e : 0);
+                    let latestTotal = latestCounts[latestCounts.length - 1];
+
                     myData.push({
                         area: areaName,
                         cases: counts,
                         slope: slope.map((e, i) => arr[i] >= this.minCasesInArea ? e : NaN),
                         total: total,
+                        latestSlope: latestSlope,
+                        latestCounts: latestCounts,
+                        latestTotal: latestTotal,
                         display_total: total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    });
+
+                    // last week
+                    myLastData.push({
+                        area: areaName,
+                        cases: latestCounts,
+                        slope: latestSlope.map((e, i) => arr[i] >= this.minCasesInArea ? e : NaN),
+                        total: latestTotal,
+                        display_total: latestTotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     });
 
                 }
             }
 
             this.covidData = myData.filter(e => this.myMax(...e.cases) >= this.minCasesInArea);
+            this.covidLatestData = myLastData.filter(e => this.myMax(...e.cases) >= this.minCasesInArea);
+            console.log(this.covidData);
 
             const sortedAreas = this.covidData.sort((a, b) => b.total - a.total);
             if (sortedAreas.length <= this.edgeMode) {
@@ -1067,6 +1105,8 @@ let app = new Vue({
         dates: [],
 
         covidData: [],
+
+        covidLatestData: [],
 
         sortedCovidData: [],
 
