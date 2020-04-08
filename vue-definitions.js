@@ -217,8 +217,10 @@ function mapWeeks(firstWeekday, weekMap, reverseMap, weeks, dateFormat, lastWeek
 
 mapWeeks(usWeek1, usWeeks, reverseUsWeeks, usWeekList, 'M/D/YY', lastUsWeek);
 mapWeeks(globalWeek1, globalWeeks, reverseGlobalWeeks, globalWeekList, 'M/D/YY', lastGlobalWeek);
-console.log(globalWeeks);
+console.log(usWeek1);
 console.log(usWeeks);
+console.log(reverseUsWeeks);
+console.log(usWeekList);
 
 function parseURL() {
     const url = window.location;
