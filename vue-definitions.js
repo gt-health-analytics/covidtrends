@@ -172,8 +172,10 @@ let reverseGlobalWeeks = {};
 let usWeekList = [];
 let globalWeekList = [];
 const dateFormats = ['MM/DD/YY', 'MM/DD/YYYY', 'M/D/YY', 'M/D/YYYY', 'YYYY-MM-DD'];
+let lastUsWeek;
+let lastGlobalWeek;
 
-function mapWeeks(firstWeekday, weekMap, reverseMap, weeks, dateFormat) {
+function mapWeeks(firstWeekday, weekMap, reverseMap, weeks, dateFormat, lastWeek) {
     let stop = false;
     let curDate = moment(firstWeekday, "MM/DD/YY");
     let n = 0;
@@ -203,6 +205,7 @@ function mapWeeks(firstWeekday, weekMap, reverseMap, weeks, dateFormat) {
 
         let isCurrentDate = curDate.isSame(new Date(), "day");
         if (isCurrentDate) {
+            lastWeek = weekString;
             // uncomment this out for partial week
             // if (!weeks.includes(weekString)) {
             //     weeks.push(weekString);
@@ -212,8 +215,8 @@ function mapWeeks(firstWeekday, weekMap, reverseMap, weeks, dateFormat) {
     }
 }
 
-mapWeeks(usWeek1, usWeeks, reverseUsWeeks, usWeekList, 'M/D/YY');
-mapWeeks(globalWeek1, globalWeeks, reverseGlobalWeeks, globalWeekList, 'M/D/YY');
+mapWeeks(usWeek1, usWeeks, reverseUsWeeks, usWeekList, 'M/D/YY', lastUsWeek);
+mapWeeks(globalWeek1, globalWeeks, reverseGlobalWeeks, globalWeekList, 'M/D/YY', lastGlobalWeek);
 console.log(globalWeeks);
 console.log(usWeeks);
 

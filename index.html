@@ -57,6 +57,12 @@
         <h3 style="margin: 0">{{mainName}} COVID-19 Cases</h3>
 
       </div>
+      <div v-if="selectedTime === 'Weekly'" align="center" class="disclaimer-container">
+        <small class="disclaimer">* Most recent partial week removed due to incomplete data.</small>
+      </div>
+      <div v-if="selectedTime !== 'Weekly'" align="center" class="disclaimer-container">
+        <small class="disclaimer">&nbsp;</small>
+      </div>
       <graph v-if="covidData.length > 0" :data="filteredCovidData" :dates="dates" :day.sync="day"
              :selected-data="selectedData" :scale="selectedScale" :resize="isHidden" :time="selectedTime"
              @graph-mounted="graphMounted = true"></graph>
@@ -78,6 +84,7 @@
           <input v-if="dates.length > 7" type="range" :min="minDay > 0 ? minDay : dates.length" :max="dates.length" step="1" v-model="day" id="slider" @mousedown="pause"></input>
         </div>
 
+
         <div class="navelement selectors">
           <select v-model="selectedScale" @mousedown="pause">
             <option v-for="s in scale" v-bind:value="s">
@@ -95,14 +102,6 @@
 
       </div>
 
-      <div v-if="selectedTime === 'Weekly'" align="center" class="disclaimer-container">
-        <small class="disclaimer">* Most recent partial week removed due to incomplete data.</small>
-        <br />
-      </div>
-      <div v-if="selectedTime !== 'Weekly'" align="center" class="disclaimer-container">
-        <small class="disclaimer">&nbsp;</small>
-        <br />
-      </div>
 
 
       <div id="footer">
