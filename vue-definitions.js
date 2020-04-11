@@ -210,6 +210,12 @@ function mapWeeks(us, firstWeekday, weekMap, reverseMap, weeks, dateFormat) {
             } else {
                 lastGlobalWeek = weekString;
             }
+
+            if (n >= 5) {
+                if (!weeks.includes(weekString)) {
+                    weeks.push(weekString);
+                }
+            }
             // uncomment this out for partial week
             // if (!weeks.includes(weekString)) {
             //     weeks.push(weekString);
